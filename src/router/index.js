@@ -74,10 +74,10 @@ export default new Router({
         path: '*',
         redirect: '/home/all?type=__all__'
     },
-//  {
-//      path: '',
-//      redirect: '/home/all?type=__all__'
-//  },
+    {
+        path: '',
+        redirect: '/home/all?type=__all__'
+    },
 
   ]
 })
