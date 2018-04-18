@@ -1,11 +1,7 @@
 <template>
   
   <div class="indexContainer withHeader">
-<<<<<<< HEAD
-    <headers></headers>
-    <div>
-      <top-menu-bar></top-menu-bar>
-=======
+
   	<!--头部-->
     <headers></headers>
     <div>
@@ -20,7 +16,7 @@
 		      </router-link>
 		    </div>
 		  </div>
->>>>>>> dev
+
       <div id="div1" class="content0">
         <div class="scroll_bar">
           <div class="bar1">⇣</div>
@@ -28,14 +24,10 @@
         </div> 
         <div id="div2">
           <content id="pageletListContent" class="feed-list-container">
-<<<<<<< HEAD
-            <div class="list-content">
-              <!--<transition-group enter-active-class="animated bounceInLeft" leave-active-class="animated bounceOutRight">-->
-                
-=======
+
             <transition enter-active-class="bounceInLeft" leave-active-class="bounceOutRight">
             	<div class="list-content animated">
->>>>>>> dev
+
                 <section class="middle_mode has_action" data-hot-time="" data-group-id="" data-item-id="" data-format="0" v-for="(item,index) in articles" :key="index">
                   <router-link 
                     :to="{
@@ -69,16 +61,10 @@
                     </div>
                   </router-link>
                 </section>  
-<<<<<<< HEAD
-                
-                
-              <!--</transition-group>-->
-              
-            </div>
-=======
+
             	</div>
             </transition>
->>>>>>> dev
+
             <div class="list_bottom">
               <section class="loadmoretip">
                 <a href="#">加载中...</a>
@@ -96,11 +82,9 @@
 
 <script>
 import Headers from '../components/Headers.vue'
-<<<<<<< HEAD
-import TopMenuBar from '../components/TopMenuBar.vue'
-=======
+
 //import TopMenuBar from '../components/TopMenuBar.vue'
->>>>>>> dev
+
 import axios from 'axios'
 //自己封装的函数方法
 import {getScrollTop,getScrollHeight,getWindowHeight,ajaxJSON} from '../assets/js/MobileFun.js'
@@ -110,10 +94,6 @@ export default {
   name: 'Home',
   components:{
     'headers':Headers,
-<<<<<<< HEAD
-    'top-menu-bar':TopMenuBar
-=======
->>>>>>> dev
   },
   filters:{
     formatDate(time){
@@ -121,19 +101,7 @@ export default {
       return formatDate(date,'yyyy-MM-dd hh:mm');
     }
   },
-<<<<<<< HEAD
-  data () {
-    return {
-      msg: '首页新闻',
-      loading : true,
-      articles:[]
-    }
-  },
-  methods:{
-    getDatas(){
-      axios.get('http://houyishuai.dev.dc.wallan-tech.com').then(function (res){
-        console.log(res.data);
-=======
+
   
   methods:{
   	
@@ -143,7 +111,7 @@ export default {
         console.log(res.data);
     	  console.log(pay.kind);
         
->>>>>>> dev
+
         this.loading = false;
         this.articles = res.data.articles;
       }.bind(this))
@@ -151,11 +119,6 @@ export default {
         console.log(error);
       });
     },
-<<<<<<< HEAD
-=======
-   
-    
->>>>>>> dev
 
   },
   
@@ -165,17 +128,13 @@ export default {
     let _this = this;  
     // 设置一个开关来避免重负请求数据  
     let sw = true;  
-<<<<<<< HEAD
-    // 此处使用node做了代理  
-    this.getDatas(); 
-=======
+
     // 此处使用node做了代理
     console.log(this.first);
     this.getDatas({
     	kind: this.first
     });
->>>>>>> dev
-    
+
     window.addEventListener('scroll',function(){  
          //console.log(getScrollTop());  
          //console.log(getWindowHeight()); 
@@ -186,22 +145,7 @@ export default {
             // 如果开关打开则加载数据  
           if(sw==true){  
             // 将开关关闭  
-<<<<<<< HEAD
-            sw = false;  
-            axios.get('http://houyishuai.dev.dc.wallan-tech.com').then(function(res){  
-            console.log(res.data);  
-              // 将新获取的数据push到vue中的data，就会反应到视图中了  
-              res.data.articles.forEach(function(val,index){  
-                _this.articles.push(val);  
-                //console.log(val);  
-              });  
-              // 数据更新完毕，将开关打开  
-              sw = true;  
-            })  
-            .catch(function(error){  
-              console.log(error);  
-            });     
-=======
+
             sw = false; 
             console.log(2);
 			    	axios.get('http://192.168.3.57:8086').then(function(res){  
@@ -217,7 +161,7 @@ export default {
 			          console.log(error);  
 			        });    
              
->>>>>>> dev
+
           }  
         }  
     });  
@@ -227,12 +171,7 @@ export default {
     '$route':function(){
       this.getDatas({
         kind:this.$route.query.type,
-<<<<<<< HEAD
-        flag:this.routerChange
-      })
-    }
-  }
-=======
+
       });
       this.first = window.location.search.substring(6);
     },
