@@ -5,7 +5,11 @@
       <a class="more_btn" href="javascript:void(0)"></a>
     </div>
     <div class="top_menu_list">
+<<<<<<< HEAD
       <router-link :to="item.url" :data-channel="item.type" data-query="" class="btn" v-for='(item,index) in navbar' :key="index">
+=======
+      <router-link :to="{path:item.url,query:{type:item.type}}" :data-channel="item.type" :data-query="'channel='+item.type" class="btn" v-for='(item,index) in navbar' :key="index">
+>>>>>>> dev
         {{item.text}}
       </router-link>
     </div>
@@ -17,12 +21,20 @@
     name: 'TopMenuBar',
     data(){
       return {
+<<<<<<< HEAD
         //频道数据
+=======
+        //频道
+>>>>>>> dev
         navbar:[
         {
           text:'推荐',
           url:'/home/all',
+<<<<<<< HEAD
           type:'_all_'
+=======
+          type:'__all__'
+>>>>>>> dev
         },
         {
           text:'热点',

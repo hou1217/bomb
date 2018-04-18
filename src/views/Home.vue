@@ -1,9 +1,26 @@
 <template>
   
   <div class="indexContainer withHeader">
+<<<<<<< HEAD
     <headers></headers>
     <div>
       <top-menu-bar></top-menu-bar>
+=======
+  	<!--头部-->
+    <headers></headers>
+    <div>
+	    <div class="top_menu_bar">
+		    <div class="top_menu_more">
+		      <div class="list_shadow"></div>
+		      <a class="more_btn" href="javascript:void(0)"></a>
+		    </div>
+		    <div class="top_menu_list">
+		      <router-link :to="{path:item.url,query:{type:item.type}}" :data-channel="item.type" :data-query="'channel='+item.type" class="btn" v-for='(item,index) in navbar' :key="index">
+		        {{item.text}}
+		      </router-link>
+		    </div>
+		  </div>
+>>>>>>> dev
       <div id="div1" class="content0">
         <div class="scroll_bar">
           <div class="bar1">⇣</div>
@@ -11,9 +28,14 @@
         </div> 
         <div id="div2">
           <content id="pageletListContent" class="feed-list-container">
+<<<<<<< HEAD
             <div class="list-content">
               <!--<transition-group enter-active-class="animated bounceInLeft" leave-active-class="animated bounceOutRight">-->
                 
+=======
+            <transition enter-active-class="bounceInLeft" leave-active-class="bounceOutRight">
+            	<div class="list-content animated">
+>>>>>>> dev
                 <section class="middle_mode has_action" data-hot-time="" data-group-id="" data-item-id="" data-format="0" v-for="(item,index) in articles" :key="index">
                   <router-link 
                     :to="{
@@ -47,11 +69,16 @@
                     </div>
                   </router-link>
                 </section>  
+<<<<<<< HEAD
                 
                 
               <!--</transition-group>-->
               
             </div>
+=======
+            	</div>
+            </transition>
+>>>>>>> dev
             <div class="list_bottom">
               <section class="loadmoretip">
                 <a href="#">加载中...</a>
@@ -69,7 +96,11 @@
 
 <script>
 import Headers from '../components/Headers.vue'
+<<<<<<< HEAD
 import TopMenuBar from '../components/TopMenuBar.vue'
+=======
+//import TopMenuBar from '../components/TopMenuBar.vue'
+>>>>>>> dev
 import axios from 'axios'
 //自己封装的函数方法
 import {getScrollTop,getScrollHeight,getWindowHeight,ajaxJSON} from '../assets/js/MobileFun.js'
@@ -79,7 +110,10 @@ export default {
   name: 'Home',
   components:{
     'headers':Headers,
+<<<<<<< HEAD
     'top-menu-bar':TopMenuBar
+=======
+>>>>>>> dev
   },
   filters:{
     formatDate(time){
@@ -87,6 +121,7 @@ export default {
       return formatDate(date,'yyyy-MM-dd hh:mm');
     }
   },
+<<<<<<< HEAD
   data () {
     return {
       msg: '首页新闻',
@@ -98,6 +133,17 @@ export default {
     getDatas(){
       axios.get('http://houyishuai.dev.dc.wallan-tech.com').then(function (res){
         console.log(res.data);
+=======
+  
+  methods:{
+  	
+    getDatas(pay){
+
+      axios.get('http://192.168.3.57:8086/?tag='+pay.kind).then(function (res){
+        console.log(res.data);
+    	  console.log(pay.kind);
+        
+>>>>>>> dev
         this.loading = false;
         this.articles = res.data.articles;
       }.bind(this))
@@ -105,6 +151,11 @@ export default {
         console.log(error);
       });
     },
+<<<<<<< HEAD
+=======
+   
+    
+>>>>>>> dev
 
   },
   
@@ -114,8 +165,16 @@ export default {
     let _this = this;  
     // 设置一个开关来避免重负请求数据  
     let sw = true;  
+<<<<<<< HEAD
     // 此处使用node做了代理  
     this.getDatas(); 
+=======
+    // 此处使用node做了代理
+    console.log(this.first);
+    this.getDatas({
+    	kind: this.first
+    });
+>>>>>>> dev
     
     window.addEventListener('scroll',function(){  
          //console.log(getScrollTop());  
@@ -127,6 +186,7 @@ export default {
             // 如果开关打开则加载数据  
           if(sw==true){  
             // 将开关关闭  
+<<<<<<< HEAD
             sw = false;  
             axios.get('http://houyishuai.dev.dc.wallan-tech.com').then(function(res){  
             console.log(res.data);  
@@ -141,6 +201,23 @@ export default {
             .catch(function(error){  
               console.log(error);  
             });     
+=======
+            sw = false; 
+            console.log(2);
+			    	axios.get('http://192.168.3.57:8086').then(function(res){  
+			        console.log(res.data);  
+			          // 将新获取的数据push到vue中的data，就会反应到视图中了  
+			          res.data.articles.forEach(function(val,index){  
+			          	_this.articles.push(val); 
+			          });  
+			          // 数据更新完毕，将开关打开  
+			          sw = true;  
+			        })  
+			        .catch(function(error){  
+			          console.log(error);  
+			        });    
+             
+>>>>>>> dev
           }  
         }  
     });  
@@ -150,10 +227,74 @@ export default {
     '$route':function(){
       this.getDatas({
         kind:this.$route.query.type,
+<<<<<<< HEAD
         flag:this.routerChange
       })
     }
   }
+=======
+      });
+      this.first = window.location.search.substring(6);
+    },
+    
+  },
+  data () {
+    return {
+      msg: '首页新闻',
+      loading : true,
+      articles:[],
+      //频道
+        navbar:[
+        {
+          text:'推荐',
+          url:'/home/all',
+          type:'__all__'
+        },
+        {
+          text:'热点',
+          url:'/home/hot',
+          type:'news_hot'
+        },
+        {
+          text:'社会',
+          url:'/home/society',
+          type:'news_society'
+        },
+        {
+          text:'汽车',
+          url:'/home/car',
+          type:'news_car'
+        },
+        {
+          text:'关注',
+          url:'/home/focus',
+          type:'news_focus'
+        },
+        {
+          text:'上海',
+          url:'/home/shanghai',
+          type:'news_shanghai'
+        },
+        {
+          text:'军事',
+          url:'/home/military',
+          type:'news_military'
+        },
+        {
+          text:'体育',
+          url:'/home/sports',
+          type:'news_sports'
+        },
+        {
+          text:'财经',
+          url:'/home/finance',
+          type:'news_finance'
+        },
+        ],
+        first:window.location.search.substring(6),
+    }
+  },
+>>>>>>> dev
 }
 </script>
 
