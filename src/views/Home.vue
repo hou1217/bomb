@@ -233,7 +233,7 @@ export default {
         first:window.location.search.substring(6),
     }
   },
->>>>>>> dev
+
 }
 </script>
 
