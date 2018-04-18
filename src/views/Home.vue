@@ -107,7 +107,7 @@ export default {
   	
     getDatas(pay){
 
-      axios.get('http://192.168.3.57:8086/?tag='+pay.kind).then(function (res){
+      axios.get('http://192.168.2.209:8086/?tag='+pay.kind).then(function (res){
         console.log(res.data);
     	  console.log(pay.kind);
         
@@ -148,7 +148,7 @@ export default {
 
             sw = false; 
             console.log(2);
-			    	axios.get('http://192.168.3.57:8086').then(function(res){  
+			    	axios.get('http://192.168.2.209:8086').then(function(res){  
 			        console.log(res.data);  
 			          // 将新获取的数据push到vue中的data，就会反应到视图中了  
 			          res.data.articles.forEach(function(val,index){  
