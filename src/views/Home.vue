@@ -1,7 +1,5 @@
 <template>
-  
   <div class="indexContainer withHeader">
-
   	<!--头部-->
     <headers></headers>
     <div>
@@ -18,28 +16,19 @@
 		  </div>
 		  <div id="div1" ref="div1" class="content0" >
         <div class="scroll_bar">
-          <div class="bar1">⇣</div>
-          <div class="bar2">下拉刷新</div>
+          <div class="bar1" v-if="status1">⇣</div>
+          <div class="bar1" v-if="status2">⇡</div>
+          <div class="bar1" v-if="status3"><img src="../assets/images/onload.gif" alt="加载中" width="38"></div>
+          <div class="bar2" v-if="status1">下拉刷新</div>
+          <div class="bar2" v-if="status2">释放刷新</div>
+          <div class="bar2" v-if="status3">正在刷新</div>
         </div>
         <div id="div2" ref="div2">
           <content id="pageletListContent" class="feed-list-container">
             <transition enter-active-class="bounceInLeft" leave-active-class="bounceOutRight">
               <div class="list-content animated">
                 <section class="middle_mode has_action" data-hot-time="" data-group-id="" data-item-id="" data-format="0" v-for="(item,index) in articleList" :key="index">
-                  <router-link 
-                    :to="{
-                      name:'newsdetail',
-                      params:
-                        {   id:item.articleId,
-                            title:item.title,
-                            media_id:item.media.id,
-                            media_name:item.media.name,
-                            time:item.time,
-                            keywords:item.keywords
-                        }
-                    }" class="article_link clearfix " data-action-label="" data-tag="">
-                    
-                    
+                  <router-link :to="{name:'newsDetail',query:{id:item.articleId},params:{token:'ba88626517342609e76dc8f8d751ec82',device_num:12000000000}}" class="article_link clearfix " data-action-label="" data-tag="">
                     <div class="item_detail desc">
                       <h3 class="dotdot line2 image-margin-right">
                         {{item.title}}
@@ -169,16 +158,21 @@ export default {
         let x = e.touches[0].pageY - this.disY;
         //向下滑动
         if( x > 0 && Math.abs(x) < 120) {
+          this.status1=true;
+          this.status2=false;
+//        this.status3=false;
            // oDiv1.css("top",(130+x)+"px");
+          
           oDiv1.style.transform = "translate(0px, "+ x +"px)";
           
           this.flag = false;
           return false;
         }else if(x >= 120 && Math.abs(x) < 156){
+          this.status1=false;
+          this.status2=true;
+//        this.status3=false;
           oDiv1.style.transform = "translate(0px, "+ x +"px)";
-          //document.querySelector(".bar1").innerHTML = '⇡';
-          //document.querySelector(".bar2").innerHTML = '释放刷新';
-          console.log(x);
+          //console.log(x);
           this.flag = true;
           return false;
         } 
@@ -186,16 +180,23 @@ export default {
       }
     })
     oDiv2.addEventListener('touchend', (e) => {
+      console.log('touchend');
       this.isdrag = false;
+      
       if(this.flag){
+        this.status2=false;
+        this.status3=true;
+        
         //document.querySelector(".refresh_btn").className += (' '+'rotate');//转动标题栏的图标
-        //document.querySelector(".bar1").innerHTML = '<img src="../images/onload.gif" alt="加载中" width="38">';
-        //document.querySelector(".bar2").innerHTML = '正在刷新';
         setTimeout(function () {
+          this.status1=true;
+          this.status3=false;
           document.location.reload();//1秒后重新加载当前页面
           //$(".list-content").html("内容已经重新加载");
         }, 1000);
       }else{
+        this.status1=true;
+        this.status2=false;
         oDiv1.style.transform = "translate(0px, -4px)";
       }    
     })
@@ -218,12 +219,15 @@ export default {
       msg: '首页新闻',
       loading : true,
       articleList:[],
+      status1:true,
+      status2:false,
+      status3:false,
       //频道
         navbar:[
         {
           text:'推荐',
           url:'/home/all',
-          type:'__all__'
+          type:'__all__',
         },
         {
           text:'热点',
