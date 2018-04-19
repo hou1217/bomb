@@ -163,6 +163,7 @@
             console.log(error);
           });
       },
+      
 	  },
 	  mounted(){
 	    //加载完成后执行
@@ -233,8 +234,9 @@
   margin-top: 80px;
 }
 .li-content p {
-  font-size: 32px;
-  color: #333333;
+  margin-top: 24px;
+  font-size: 20px;
+  color: #000;
   line-height: 50px;
 }
 .li-keywords{
@@ -244,7 +246,7 @@
   border: solid 1px #426fa1;
   border-radius: 15px;
   padding: 0 10px;
-  font-size: 24px;
+  font-size: 21px;
   color: #436fa0;
   height: 50px;
   display: -webkit-inline-box;
@@ -303,7 +305,7 @@ a{
     width: -webkit-calc(100% + 60px);
     width: -moz-calc(100% + 60px);
     width: calc(100% + 60px); */
-  margin: 60px auto 0;
+  margin: 24px auto 0;
     /*max-height: 460px;*/
     /*max-width: 100%;*/
   display: block;

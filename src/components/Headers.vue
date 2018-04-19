@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="abs_l">
-        <a href="javascript:;" class="rtn-box"></a>
+        <a href="javascript:;" @click="goBack" class="rtn-box"></a>
       </div>
       <div class="abs_r">
         <a href="javascript:;" class="btn search"></a>
@@ -16,11 +16,18 @@
     </div>
   </header>
 </template>
-<scritp>
+<script>
   export default {
     name: 'Headers',
+    methods:{
+      goBack(){
+        this.$router.go(-1);
+      }
+    }
   }
-</scritp>
+
+</script>
+ 
 <style>
   
 </style>
