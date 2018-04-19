@@ -100,7 +100,7 @@ export default {
   methods:{
   	
     getDatas(pay){
-      axios.get('http://192.168.2.209:8086/?tag='+pay.kind)
+      axios.get('http://127.0.0.1:8086/?tag='+pay.kind)
         .then(function (res){
           console.log(res.data);
       	  console.log(pay.kind);
@@ -113,7 +113,7 @@ export default {
     },
     loadMoreDatas(payload){
       console.log("加载新的数据了.....");
-      axios.get('http://192.168.2.209:8086/?tag='+payload.kind)
+      axios.get('http://127.0.0.1:8086/?tag='+payload.kind)
           .then(function(res){
             console.log(payload.kind);
             console.log(res.data); 
