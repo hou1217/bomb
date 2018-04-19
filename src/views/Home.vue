@@ -1,7 +1,5 @@
 <template>
-  
   <div class="indexContainer withHeader">
-
   	<!--头部-->
     <headers></headers>
     <div>
@@ -26,20 +24,7 @@
             <transition enter-active-class="bounceInLeft" leave-active-class="bounceOutRight">
               <div class="list-content animated">
                 <section class="middle_mode has_action" data-hot-time="" data-group-id="" data-item-id="" data-format="0" v-for="(item,index) in articleList" :key="index">
-                  <router-link 
-                    :to="{
-                      name:'newsdetail',
-                      params:
-                        {   id:item.articleId,
-                            title:item.title,
-                            media_id:item.media.id,
-                            media_name:item.media.name,
-                            time:item.time,
-                            keywords:item.keywords
-                        }
-                    }" class="article_link clearfix " data-action-label="" data-tag="">
-                    
-                    
+                  <router-link :to="{name:'newsDetail',query:{id:item.articleId},params:{token:'ba88626517342609e76dc8f8d751ec82',device_num:12000000000}}" class="article_link clearfix " data-action-label="" data-tag="">
                     <div class="item_detail desc">
                       <h3 class="dotdot line2 image-margin-right">
                         {{item.title}}
@@ -223,7 +208,7 @@ export default {
         {
           text:'推荐',
           url:'/home/all',
-          type:'__all__'
+          type:'__all__',
         },
         {
           text:'热点',

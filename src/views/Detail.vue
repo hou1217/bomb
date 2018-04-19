@@ -1,55 +1,60 @@
 <template>
   <div class="container">
+    <headers></headers>
     <div class="detail">
-      <input type="hidden" id="article_id">
-      <input type="hidden" id="token">
-      <input type="hidden" id="device_num">
+      <input type="hidden" id="article_id" :value="id">
+      <input type="hidden" id="token" :value="token">
+      <input type="hidden" id="device_num" :value="device">
       <ul>
-        <li class="li-channel" id="article_channel" onclick="channelDetail('5a616dc63556cc8802941004')">
+        <li class="li-channel" id="article_channel" @click="">
           <a href="#">新闻</a>
         </li>
         <li class="li-title" id="article_title">
-          {{}}
+          {{title}}
         </li>
         <li class="li-media">
-          <div class="article-meta-img div-media" onclick="mediaDetail('5a741e7433f17c50cc7b1209')">
-            <!-- 公众号头像 -->
-            <img id="portraitUrl" src="https://wander.wallan-tech.com:1443/media-app/media/download/THUMB/NEWS-5a741ea5963a654b84e35d7b" class="img-media">
+          <div class="article-meta-img div-media" @click="">
+            <img id="portraitUrl" :src="portraitUrl" class="img-media">
           </div>
           <div class="article-meta-info div-media">
-            <div class="article-meta-name" id="article_mediaName" onclick="mediaDetail('5a741e7433f17c50cc7b1209')">
-            <!-- 公众号名字 -->
+            <div class="article-meta-name" id="article_mediaName" @click="">
+              {{mediaNames}}
             </div>
             <div class="article-meta-date" id="article_time">
-              <!-- 文章创建时间 -->
+              {{time | formatDate}}
             </div>
           </div>
           <div class="article-meta-follow div-media" id="follow1">
-            <!-- 公众号ID -->
+            <input type="hidden" id="follow">
+            <span class="media-un-follow" id="follow-action" @click="">+关注</span>
           </div>
         </li>
-        <li class="li-content" id="article_content">
-          <!-- 文章内容 -->
+        <li class="li-content" id="article_content" >
+          <div v-for='(item,index) in content' :key="index">
+            <p v-if='item.content'>{{item.content}}</p>
+            <div class="content-panel" v-if='item.url'>
+              <img class="content-img" :src="item.url" alt="图片信息">
+            </div>
+          </div>
         </li>
         <li class="li-keywords" id="article_keywords">
-          <!-- 文章关键字 -->
+          <span v-for='(item,index) in keywords' :key="index">
+            {{item}}
+          </span>
         </li>
         <li class="li-footer">
-          <!-- 查看原文 -->
-          <a id="origin-link">查看原文</a>
+          <a id="origin-link" :href="originUrl">查看原文</a>
           <div class="footer-panel">
-            <span class="footer-source" id="footer_source">
-            <!-- 文本来源 -->
-            </span>
+            <span class="footer-source" id="footer_source">本文来源：  {{origin}}</span>
             <span class="footer-author" id="footer_author">
-            <!-- 作者 -->
+              {{originAuthor}}
             </span>
           </div>
         </li>
         <li class="li-star">
           <div class="div-star">
-            <img src="/bomb/img/un_star.png" id="star_img" class="un-star" onclick="starImg();">
-            <span class="star-count">0</span>
+            <img src="../assets/images/un_star.png" id="star_img" class="un-star" @click="">
+            <span class="star-count">{{likes}}</span>
           </div>
         </li>
         <li class="li-star-panel">
@@ -57,110 +62,119 @@
             <!-- 点赞人的头像 -->
           </div>
           <div class="star-info-panel">
-            <span class="star-count">0</span>人点赞
+            <span class="star-count">{{likes}}</span>人点赞
             <span class="star-icon">></span>
           </div>
         </li>
         <li class="li-media li-media-bottom">
           <div class="article-meta-img div-media" onclick="mediaDetail('5a741e7433f17c50cc7b1209')">
-            <!-- 公众号头像 -->
-            <img id="portraitUrlBottom" src="https://wander.wallan-tech.com:1443/media-app/media/download/THUMB/NEWS-5a741ea5963a654b84e35d7b" class="img-media">
+            <img id="portraitUrlBottom" :src="portraitUrl" class="img-media">
           </div>
           <div class="article-meta-info div-media">
-            <div class="article-meta-name" id="article_mediaNameBottom" onclick="mediaDetail('5a741e7433f17c50cc7b1209')">
-            <!-- 公众号名字 -->
+            <div class="article-meta-name" id="article_mediaNameBottom" @click="">
+              {{mediaNames}}
             </div>
             <div class="media-fans" id="media-fans">
-              <!-- 粉丝数和关注数 -->
+              <span>关注{{mediaFollows}}</span>
+              <span>粉丝{{mediaFans}}</span>
             </div>
           </div>
           <div class="article-meta-follow div-media" id="follow2">
-            <!-- 公众号ID -->
+            <span class="media-un-follow" id="follow-action-bottom" @click="">+关注</span>
           </div>
         </li>
         <li class="li-advert">
-          <img src="/bomb/img/advert.png">
+          <img src="../assets/images/advert.png">
         </li>
-        <li class="li-recommend">
-          <p class="recommend-title">推荐你看</p>
-          <div class="article-list" onclick="recommendArticleDetail('5a97ce3233f17c7ec8a7c858')">
-            <div class="article-cover">
-              <img src="http://wander.dev.wallan.tech/media-app/media/download/THUMB/NEWS-5a6d43fe963a6514a836dd41">
-            </div>
-            <div class="article-info">
-              <p class="article-title">原创少女心爆棚！15个梦幻可爱的全粉色打卡地大盘点！</p>
-              <span class="article-media">携程旅行</span>
-              <span class="article-comment-icon"><img src="/bomb/img/comment.png"></span>
-              <span class="article-comment-count">60</span>
-              <span class="article-date">12:12</span>
-            </div>
-          </div>
-          
-          <div class="article-list" onclick="recommendArticleDetail('5a97ce3233f17c7ec8a7c858')">
-            <div class="article-cover">
-              <img src="http://wander.dev.wallan.tech/media-app/media/download/THUMB/NEWS-5a6d43fe963a6514a836dd41">
-            </div>
-            <div class="article-info">
-              <p class="article-title">原创少女心爆棚！15个梦幻可爱的全粉色打卡地大盘点！</p>
-              <span class="article-media">携程旅行</span>
-              <span class="article-comment-icon"><img src="/bomb/img/comment.png"></span>
-              <span class="article-comment-count">60</span>
-              <span class="article-date">12:12</span>
-            </div>
-          </div>
-          
-          <div class="article-list" onclick="recommendArticleDetail('5a97ce3233f17c7ec8a7c858')">
-            <div class="article-cover">
-              <img src="http://wander.dev.wallan.tech/media-app/media/download/THUMB/NEWS-5a6d43fe963a6514a836dd41">
-            </div>
-            <div class="article-info">
-              <p class="article-title">原创少女心爆棚！15个梦幻可爱的全粉色打卡地大盘点！</p>
-              <span class="article-media">携程旅行</span>
-              <span class="article-comment-icon"><img src="/bomb/img/comment.png"></span>
-              <span class="article-comment-count">60</span>
-              <span class="article-date">12:12</span>
-            </div>
-          </div>
-        </li>
-        <li class="li-hot-chat">
-          <div id="topic_hot_chat" class="topic-hot-chat">
-            <div class="topic-hot-chat-title">
-              <img src="/bomb/img/personalinformation.png">
-              <span>我们正在热聊</span>
-            </div>
-            <div class="topic-hot-chat-name">
-              <span>咱们坐船出游吧</span>
-            </div>
-            <div class="topic-hot-chat-portrait">
-              <img src="http://wander.dev.wallan.tech/media-app/media/download/THUMB/NEWS-5a65826b963a654b5df7b206">
-              <img src="http://wander.dev.wallan.tech/media-app/media/download/THUMB/NEWS-5a65826b963a654b5df7b206">
-              <img src="http://wander.dev.wallan.tech/media-app/media/download/THUMB/NEWS-5a65826b963a654b5df7b206">
-              <img src="http://wander.dev.wallan.tech/media-app/media/download/THUMB/NEWS-5a65826b963a654b5df7b206">
-              <img src="http://wander.dev.wallan.tech/media-app/media/download/THUMB/NEWS-5a65826b963a654b5df7b206">
-            </div>
-            <div class="topic-hot-chat-join">
-              <span>2.67万</span>人参与话题，快来加入我们
-              <!--<img src="/bomb/img/personalinformation_more.png">-->
-            </div>
-          </div>
-        </li>
+        <recommend></recommend>
+        <hotChat></hotChat>
       </ul>
     </div>
   </div>
 </template>
 
 <script type="text/javascript">
+  import Headers from '../components/Headers.vue'
+  import Recommend from '../components/Recommend.vue'
+  import HotChat from '../components/HotChat.vue'
+  import axios from 'axios'
+  
+  import {formatDate} from '../assets/js/Date.js'
 	export default{
+	  name: 'Detail',
+	  components:{
+    'headers':Headers,
+    'recommend':Recommend,
+    'hotChat':HotChat,
+    },
+    filters:{
+      formatDate(time){
+        var date = new Date(time);
+        return formatDate(date,'yyyy-MM-dd hh:mm');
+      }
+    },
 	  data(){
 	    return {
-	      title:'why',
+	      id:this.$route.query.id,
+	      token:this.$route.params.token,
+	      device:this.$route.params.device_num,
+	      title:'',
+        content:[],
+        time:0,
+        keywords:[],
+        mediaId:0,
+        mediaNames:'',
+        mediaFans:0,
+        mediaFollows:0,
+        portraitUrl:'',
+        portraits:'',
+        originAuthor:'',
+        origin:'',
+        originUrl:'',
+        starCounts:0,
+        likes:0,
 	    }
+	  },
+	  
+	  methods:{
+	    getDatas(pay){
+        axios.get('http://192.168.2.209:8088/?id='+pay.kind)
+          .then(function (res){
+            console.log(res.data.article);
+            console.log(pay.kind);
+            this.loading = false;
+//          this.articleList = res.data.articles;
+            this.time = res.data.article.createdAt;
+            this.title = res.data.article.title;
+            this.mediaNames = res.data.article.media.name;
+            this.portraitUrl = res.data.article.media.portraitUrl;
+            this.mediaNames = res.data.article.media.name;
+            this.mediaId = res.data.article.media.id;
+            this.keywords = res.data.article.keywords;
+            this.content = res.data.article.items;
+            this.origin = res.data.article.origin;
+            this.originUrl = res.data.article.originUrl;
+            this.originAuthor = res.data.article.originAuthor;
+            this.linkes = res.data.article.likes;
+            this.mediaFans = res.data.article.media.fans;
+            this.mediaFollows = res.data.article.media.follows;
+          }.bind(this))
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
+	  },
+	  mounted(){
+	    //加载完成后执行
+      this.getDatas({
+        kind:this.$route.query.id,
+      });
 	  }
 	}
 </script>
 
-<style>
-  .container{
+<style scoped>
+.container{
   font-family: 'Microsoft YaHei','Helvetica','Arial',sans-serif;
   font-size: 14px;
 }
@@ -355,115 +369,7 @@ img+p {
   width: -moz-calc(100% + 60px);
   width: calc(100% + 60px);
 }
-.li-recommend{
-  margin-top: 80px;
-}
-.li-recommend .recommend-title{
-  font-size: 34px;
-  font-weight: bold;
-  color: #333333;
-}
-.li-recommend .article-list{
-  height: 200px;
-}
-.li-recommend .article-list:nth-child(1){
-  margin-top: 40px;
-} 
-.li-recommend .article-list:nth-child(n+1){
-  margin-top: 20px;
-} 
-.li-recommend .article-list div{
-  float: left;
-}
-.li-recommend .article-list div.article-cover img{
-  border-radius: 4px;
-  width: 280px;
-  height: 200px;
-}
-.li-recommend .article-list div.article-info{
-  background-color: #fafafa;
-  width: -webkit-calc(100% - 280px);
-  width: -moz-calc(100% - 280px);
-  width: calc(100% - 280px);
-  font-size: 24px;
-  color: #999999;
-  height: 200px;
-}
-.li-recommend .article-list div.article-info .article-title{
-  margin-left: 20px;
-  font-size: 32px;
-  color: #333333;
-  font-weight: bold;
-  -webkit-line-clamp: 2;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-}
-.li-recommend .article-list div.article-info .article-media{
-  margin-left: 20px;
-}
-.li-recommend .article-list div.article-info .article-comment-icon{
-  margin-left: 40px;
-}
-.li-recommend .article-list div.article-info .article-comment-count{
-  margin-left: 8px;
-}
-.li-recommend .article-list div.article-info .article-date{
-  margin-left: 20px;
-}
-/*话题热聊*/
-.li-hot-chat{
-  margin-top: 80px; 
-  font-size: 24px;
-  color: #ffffff;
-}
-.li-hot-chat .topic-hot-chat{
-  width: -webkit-calc(100% + 60px);
-  width: -moz-calc(100% + 60px);
-  width: calc(100% + 60px);
-  height: 400px;
-  margin-left: -30px;
-  background-repeat: no-repeat;
-  background-size: 100%;
-}
-.li-hot-chat .topic-hot-chat-title{
-  text-align: center;
-  font-size: 24px;
-  color: #ffffff;
-}
-.li-hot-chat .topic-hot-chat-title img{
-  margin-top: 50px;
-  width: 24px;
-}
-.li-hot-chat .topic-hot-chat-name{
-  font-size: 36px;
-  font-weight: bold;
-  color: #ffffff;
-  text-align: center;
-  margin-top: 30px;
-}
-.li-hot-chat .topic-hot-chat-portrait{
-  text-align: center;
-  margin-top: 44px;
-}
-.li-hot-chat .topic-hot-chat-portrait img{
-  border-radius: 50%;
-  width: 60px;
-}
-.li-hot-chat .topic-hot-chat-portrait img:nth-child(n+2){
-  margin-left: 16px;
-}
-.li-hot-chat .topic-hot-chat-join{
-  text-align: center;
-  font-size: 24px;
-  color: #ffffff;
-  font-weight: bold;
-  margin-top: 24px;
-}
-.li-hot-chat .topic-hot-chat-join img{
-  margin-left: 20px;
-}
+
 
 .container .images,.video{
   border-top: solid 1px #333333;
