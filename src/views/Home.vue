@@ -100,7 +100,7 @@ export default {
           console.log(error);
         });
     },
-    loadMoreDatas(payload){
+    loadMoreDatas(payload,mode){
       console.log("加载新的数据了.....");
       axios.get('http://127.0.0.1:8086/?tag='+payload.kind)
           .then(function(res){
@@ -111,7 +111,12 @@ export default {
             let _this = this;
             res.data.articles.forEach(function(val,index){  
 //            console.log(val);
-              _this.articleList.push(val); 
+							if(!mode){
+	              _this.articleList.push(val); 
+							}else{
+	              _this.articleList.unshift(val); 
+							}
+
             });  
             // 数据更新完毕，将开关打开  
             this.sw = true;  
@@ -141,7 +146,7 @@ export default {
             // 此处使用node做了代理
             this.loadMoreDatas({
               kind:this.$route.query.type,
-            });
+            },false);
           }  
         }  
     });
@@ -186,14 +191,18 @@ export default {
       if(this.flag){
         this.status2=false;
         this.status3=true;
+        document.querySelector(".refresh_btn").className += (' '+'rotate');//转动标题栏的图标
+          //document.location.reload();//1秒后重新加载当前页面
+				this.loadMoreDatas({
+          kind:this.$route.query.type,
+        },true);
+        let _this = this;
+    		setTimeout(function(){
+        	_this.status1=true;
+					_this.status3=false;
+    			oDiv1.style.transform = "translate(0px, -4px)";
+        },500);
         
-        //document.querySelector(".refresh_btn").className += (' '+'rotate');//转动标题栏的图标
-        setTimeout(function () {
-          this.status1=true;
-          this.status3=false;
-          document.location.reload();//1秒后重新加载当前页面
-          //$(".list-content").html("内容已经重新加载");
-        }, 1000);
       }else{
         this.status1=true;
         this.status2=false;
@@ -216,7 +225,6 @@ export default {
   },
   data () {
     return {
-      msg: '首页新闻',
       loading : true,
       articleList:[],
       status1:true,

@@ -138,7 +138,7 @@
 	  
 	  methods:{
 	    getDatas(pay){
-        axios.get('http://192.168.2.209:8088/?id='+pay.kind)
+        axios.get('http://127.0.0.1:8088/?id='+pay.kind)
           .then(function (res){
             console.log(res.data.article);
             console.log(pay.kind);
