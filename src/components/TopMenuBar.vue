@@ -6,7 +6,9 @@
     </div>
     <div class="top_menu_list">
 
-      <router-link :to="{path:item.url,query:{type:item.type}}" :data-channel="item.type" :data-query="'channel='+item.type" class="btn" v-for='(item,index) in navbar' :key="index">
+      <router-link :to="{path:item.url,query:{type:item.type}}" 
+      	:data-channel="item.type" :data-query="'channel='+item.type" class="btn" 
+      	v-for='(item,index) in navbar' :key="index" @dblclick="goTop">
 
         {{item.text}}
       </router-link>
@@ -17,6 +19,12 @@
 <script>
   export default {
     name: 'TopMenuBar',
+    methods:{
+    	goTop(){
+    		console.log(234);
+	      document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
+    	}
+    },
     data(){
       return {
 

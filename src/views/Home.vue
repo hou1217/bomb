@@ -1,7 +1,7 @@
 <template>
   <div class="indexContainer withHeader">
   	<!--头部-->
-    <headers></headers>
+    <headers :isRotate="isRotate"></headers>
     <div>
 	    <div class="top_menu_bar">
 		    <div class="top_menu_more">
@@ -89,7 +89,7 @@ export default {
   methods:{
   	
     getDatas(pay){
-      axios.get('http://127.0.0.1:8086/?tag='+pay.kind)
+      axios.get(this.GLOBAL.serverUrl+'/?tag='+pay.kind)
         .then(function (res){
           console.log(res.data);
       	  console.log(pay.kind);
@@ -102,7 +102,7 @@ export default {
     },
     loadMoreDatas(payload,mode){
       console.log("加载新的数据了.....");
-      axios.get('http://127.0.0.1:8086/?tag='+payload.kind)
+      axios.get(this.GLOBAL.serverUrl+'/?tag='+payload.kind)
           .then(function(res){
             console.log(payload.kind);
             console.log(res.data); 
@@ -135,6 +135,7 @@ export default {
     this.getDatas({
       kind:this.$route.query.type,
     });
+//  console.log(this.GLOBAL.serverUrl);
     console.log(this.$route.query.type);
     window.addEventListener('scroll',()=>{   
         // 判断是否滚动到底部  
@@ -191,7 +192,8 @@ export default {
       if(this.flag){
         this.status2=false;
         this.status3=true;
-        document.querySelector(".refresh_btn").className += (' '+'rotate');//转动标题栏的图标
+//      document.querySelector(".refresh_btn").className += (' '+'rotate');//转动标题栏的图标
+				this.isRotate = true;
           //document.location.reload();//1秒后重新加载当前页面
 				this.loadMoreDatas({
           kind:this.$route.query.type,
@@ -201,6 +203,7 @@ export default {
         	_this.status1=true;
 					_this.status3=false;
     			oDiv1.style.transform = "translate(0px, -4px)";
+    			_this.isRotate = false;
         },500);
         
       }else{
@@ -225,6 +228,7 @@ export default {
   },
   data () {
     return {
+    	isRotate:false,
       loading : true,
       articleList:[],
       status1:true,

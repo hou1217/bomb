@@ -1,0 +1,15 @@
+<script>
+const serverUrl = 'http://127.0.0.1:8086';
+const serverUrl2 = 'http://127.0.0.1:8088';
+/*const token='12345678';
+const hasEnter=false;
+const userSite="中国钓鱼岛";*/
+ export default
+ {
+  serverUrl,//服务器地址1
+  serverUrl2,//服务器地址2
+  /*userSite,//用户地址
+  token,//用户token身份
+  hasEnter,//用户登录状态*/
+ }
+</script>

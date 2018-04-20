@@ -4,7 +4,7 @@
       <div class="abs_m">
         <a href="#" class="refresh_title btn">卧岚头条</a>
         <div class="refreshBtn-container ">
-          <i class="refresh_btn"></i>
+          <i class="refresh_btn" :class="{rotate:isRotate}"></i>
         </div>
       </div>
       <div class="abs_l">
@@ -19,6 +19,7 @@
 <script>
   export default {
     name: 'Headers',
+    props:['isRotate']  ,
     methods:{
       goBack(){
         this.$router.go(-1);

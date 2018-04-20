@@ -7,6 +7,9 @@ import router from './router'
 
 import './assets/css/style.css'
 import './assets/css/animate.css'
+
+import Global from './config/Global'//引用文件
+Vue.prototype.GLOBAL = Global//挂载到Vue实例上面
 //Vue.use(Vuex)
 Vue.config.productionTip = false
 
