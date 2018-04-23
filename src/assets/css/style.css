@@ -105,7 +105,7 @@ a {
 
 .top_menu_bar {
   background: white;
-  height: 67px;
+  height: 74px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   border-bottom: 1px solid #eeeeee;
@@ -121,7 +121,7 @@ a {
 .top_menu_bar .top_menu_more .list_shadow {
   position: absolute;
   width: 8px;
-  height: 38px;
+  height: 46px;
   margin-top: 15px;
   left: -8px;
   background: url(../images/intercept.png) no-repeat center;
@@ -131,9 +131,9 @@ a {
   display: block;
   position: relative;
   width: 50px;
-  height: 66px;
+  height: 73px;
   margin-right: 20px;
-  line-height: 66px;
+  line-height: 73px;
   background: url(../images/new_classification.png) no-repeat center;
   background-size: contain;
 }
@@ -149,13 +149,13 @@ a {
   color: #333333;
   text-decoration: none;
   font-size: 32px;
-  line-height: 50px;
-  height: 50px;
+  line-height: 53px;
+  height: 53px;
   padding-left: 20px;
   padding-right: 6px;
   margin-left: 10px;
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0.3);
 }
 .top_menu_bar .top_menu_list .btn.cur {

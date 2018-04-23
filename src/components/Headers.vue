@@ -19,6 +19,11 @@
 <script>
   export default {
     name: 'Headers',
+    data(){
+      return{
+        isRotate:false,
+      }
+    },
     methods:{
       goBack(){
         this.$router.go(-1);

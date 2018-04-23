@@ -100,7 +100,7 @@ export default {
           console.log(error);
         });
     },
-    loadMoreDatas(payload){
+    loadMoreDatas(payload,mode){
       console.log("加载新的数据了.....");
       axios.get('http://192.168.2.209:8086/?tag='+payload.kind)
           .then(function(res){
@@ -111,7 +111,14 @@ export default {
             let _this = this;
             res.data.articles.forEach(function(val,index){  
 //            console.log(val);
-              _this.articleList.push(val); 
+              if(mode){
+                console.log(1);
+                _this.articleList.unshift(val); 
+              }else{
+                console.log(2);
+                _this.articleList.push(val); 
+              }
+              
             });  
             // 数据更新完毕，将开关打开  
             this.sw = true;  
@@ -130,6 +137,7 @@ export default {
     this.getDatas({
       kind:this.$route.query.type,
     });
+    this.isRotate=false;
     console.log(this.$route.query.type);
     window.addEventListener('scroll',()=>{   
         // 判断是否滚动到底部  
@@ -141,7 +149,7 @@ export default {
             // 此处使用node做了代理
             this.loadMoreDatas({
               kind:this.$route.query.type,
-            });
+            },false);
           }  
         }  
     });
@@ -160,8 +168,6 @@ export default {
         if( x > 0 && Math.abs(x) < 120) {
           this.status1=true;
           this.status2=false;
-//        this.status3=false;
-           // oDiv1.css("top",(130+x)+"px");
           
           oDiv1.style.transform = "translate(0px, "+ x +"px)";
           
@@ -170,7 +176,6 @@ export default {
         }else if(x >= 120 && Math.abs(x) < 156){
           this.status1=false;
           this.status2=true;
-//        this.status3=false;
           oDiv1.style.transform = "translate(0px, "+ x +"px)";
           //console.log(x);
           this.flag = true;
@@ -186,14 +191,15 @@ export default {
       if(this.flag){
         this.status2=false;
         this.status3=true;
+        document.querySelector(".refresh_btn").className += (' '+'rotate');//转动标题栏的图标
         
-        //document.querySelector(".refresh_btn").className += (' '+'rotate');//转动标题栏的图标
-        setTimeout(function () {
           this.status1=true;
           this.status3=false;
-          document.location.reload();//1秒后重新加载当前页面
-          //$(".list-content").html("内容已经重新加载");
-        }, 1000);
+          this.loadMoreDatas({
+            kind:this.$route.query.type,
+          },true);
+          
+        
       }else{
         this.status1=true;
         this.status2=false;
@@ -204,7 +210,6 @@ export default {
   watch:{
     //监听路由的type类型改变
     '$route':function(){
-      
       this.getDatas({
         kind:this.$route.query.type,
       });
@@ -222,6 +227,7 @@ export default {
       status1:true,
       status2:false,
       status3:false,
+//    mode:false,
       //频道
         navbar:[
         {
