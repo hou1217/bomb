@@ -1,8 +1,8 @@
 <script>
-//const serverUrl = 'http://192.168.2.209:8086';
-//const serverUrl2 = 'http://192.168.2.209:8088';
 const serverUrl = process.env.API_ROOT;
 const serverUrl2 = process.env.API_ROOT2;
+//const serverUrl = 'http://192.168.2.209:8086';
+//const serverUrl2 = 'http://192.168.2.209:8088';
 /*const token='12345678';
 const hasEnter=false;
 const userSite="中国钓鱼岛";*/

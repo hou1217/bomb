@@ -59,8 +59,8 @@ const ajaxJSON = function(method,url) {
     client.onreadystatechange = handler;
     client.responseType = "json";
     client.setRequestHeader("Accept", "application/json");
-    /*client.setRequestHeader("WALLAN-TOKEN", "ba88626517342609e76dc8f8d751ec82");
-    client.setRequestHeader("WALLAN-DEVICENUM", "12000000000");*/
+    client.setRequestHeader('WALLAN-TOKEN', 'ba88626517342609e76dc8f8d751ec82');
+    client.setRequestHeader('WALLAN-DEVICENUM', '12000000000');
     client.send();
   });
   return promise;

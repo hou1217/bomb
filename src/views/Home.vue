@@ -67,6 +67,7 @@ import Headers from '../components/Headers.vue'
 //import PullRefresh from '../components/PullRefresh.vue'
 //import TopMenuBar from '../components/TopMenuBar.vue'
 
+
 import axios from 'axios'
 //自己封装的函数方法
 import {getScrollTop,getScrollHeight,getWindowHeight,ajaxJSON} from '../assets/js/MobileFun.js'
@@ -89,10 +90,32 @@ export default {
   methods:{
   	
     getDatas(pay){
-      axios.get(this.GLOBAL.serverUrl+'/?tag='+pay.kind)
+      //调用自己封装的AJAX方法
+      /*ajaxJSON("GET",this.GLOBAL.serverUrl+'/?tag='+pay.kind)
+      .then(function(res){
+        console.log(res);
+//      console.log(res.headers);
+        //console.log(pay.kind);
+        this.loading = false;
+        this.articleList = res.articles;
+      }.bind(this))
+      .catch(function (error) {
+        console.log(error);
+      });*/
+     //调用axios plugin
+      const options = {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json;',
+          'WALLAN-TOKEN': '5d4139e70b35803e75414ddef0f57cd9',
+          'WALLAN-DEVICENUM':'12000000000'
+        },
+        url:this.GLOBAL.serverUrl+'/?tag='+pay.kind
+      };
+      axios(options)
         .then(function (res){
           console.log(res.data);
-      	  console.log(pay.kind);
+          console.log(pay.kind);
           this.loading = false;
           this.articleList = res.data.articles;
         }.bind(this))
@@ -102,11 +125,19 @@ export default {
     },
     loadMoreDatas(payload,mode){
       console.log("加载新的数据了.....");
-      axios.get(this.GLOBAL.serverUrl+'/?tag='+payload.kind)
+      const options = {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json;',
+          'WALLAN-TOKEN': '5d4139e70b35803e75414ddef0f57cd9',
+          'WALLAN-DEVICENUM':'12000000000'
+        },
+        url:this.GLOBAL.serverUrl+'/?tag='+payload.kind
+      };
+      axios(options)
           .then(function(res){
             console.log(payload.kind);
             console.log(res.data); 
-//          console.log(this.articleList);
             // 将新获取的数据push到vue中的data，就会反应到视图中了
             let _this = this;
             res.data.articles.forEach(function(val,index){  
@@ -218,7 +249,6 @@ export default {
       
       this.first = window.location.search.substring(6);
     },
-    
   },
   data () {
     return {
@@ -237,6 +267,11 @@ export default {
           type:'__all__',
         },
         {
+          text:'关注',
+          url:'/home/focus',
+          type:'news_focus'
+        },
+        {
           text:'热点',
           url:'/home/hot',
           type:'news_hot'
@@ -250,11 +285,6 @@ export default {
           text:'汽车',
           url:'/home/car',
           type:'news_car'
-        },
-        {
-          text:'关注',
-          url:'/home/focus',
-          type:'news_focus'
         },
         {
           text:'上海',

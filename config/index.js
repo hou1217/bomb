@@ -38,7 +38,7 @@ module.exports = {
 
   build: {
     // Template for index.html
-    // 添加test pre prod 三处环境的配制
+    // 添加test pre prod 三处环境的配制 --2018.4.23
     prodEnv: require('./prod.env'),
     preEnv: require('./pre.env'),
     testEnv: require('./test.env'),
