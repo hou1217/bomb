@@ -116,7 +116,6 @@ export default {
 							}else{
 	              _this.articleList.unshift(val); 
 							}
-
             });  
             // 数据更新完毕，将开关打开  
             this.sw = true;  
@@ -166,8 +165,6 @@ export default {
         if( x > 0 && Math.abs(x) < 120) {
           this.status1=true;
           this.status2=false;
-//        this.status3=false;
-           // oDiv1.css("top",(130+x)+"px");
           
           oDiv1.style.transform = "translate(0px, "+ x +"px)";
           
@@ -176,7 +173,6 @@ export default {
         }else if(x >= 120 && Math.abs(x) < 156){
           this.status1=false;
           this.status2=true;
-//        this.status3=false;
           oDiv1.style.transform = "translate(0px, "+ x +"px)";
           //console.log(x);
           this.flag = true;
@@ -205,7 +201,6 @@ export default {
     			oDiv1.style.transform = "translate(0px, -4px)";
     			_this.isRotate = false;
         },500);
-        
       }else{
         this.status1=true;
         this.status2=false;
@@ -216,7 +211,6 @@ export default {
   watch:{
     //监听路由的type类型改变
     '$route':function(){
-      
       this.getDatas({
         kind:this.$route.query.type,
       });
@@ -234,6 +228,7 @@ export default {
       status1:true,
       status2:false,
       status3:false,
+//    mode:false,
       //频道
         navbar:[
         {
