@@ -11,7 +11,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-const env = require('../config/prod.env')
+// 个性env常量的定义
+// const env = require('../config/prod.env')
+const env = config.build[process.env.env_config+'Env'] //2018.4.23新增
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {

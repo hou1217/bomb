@@ -38,6 +38,10 @@ module.exports = {
 
   build: {
     // Template for index.html
+    // 添加test pre prod 三处环境的配制
+    prodEnv: require('./prod.env'),
+    preEnv: require('./pre.env'),
+    testEnv: require('./test.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
 
     // Paths
