@@ -145,7 +145,7 @@
             'WALLAN-TOKEN': '5d4139e70b35803e75414ddef0f57cd9',
             'WALLAN-DEVICENUM':'12000000000'
           },
-          url:this.GLOBAL.serverUrl2+'/?id='+pay.kind
+          url:this.GLOBAL.serverUrl+'/article/detail'+'?id='+pay.kind
         };
         axios(options)
           .then(function (res){

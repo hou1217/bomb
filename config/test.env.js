@@ -2,7 +2,8 @@
 module.exports = {
  NODE_ENV: '"testing"',
  EVN_CONFIG:'"test"',
- API_ROOT:'"/test/apis/train"'
+ API_ROOT:'"http://media.dc.wallan-tech.com"'
+ 
 }
 
 

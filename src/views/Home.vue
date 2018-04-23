@@ -28,7 +28,7 @@
             <transition enter-active-class="bounceInLeft" leave-active-class="bounceOutRight">
               <div class="list-content animated">
                 <section class="middle_mode has_action" data-hot-time="" data-group-id="" data-item-id="" data-format="0" v-for="(item,index) in articleList" :key="index">
-                  <router-link :to="{name:'newsDetail',query:{id:item.articleId},params:{token:'ba88626517342609e76dc8f8d751ec82',device_num:12000000000}}" class="article_link clearfix " data-action-label="" data-tag="">
+                  <router-link :to="{name:'newsDetail',query:{id:item.articleId}}" class="article_link clearfix " data-action-label="" data-tag="">
                     <div class="item_detail desc">
                       <h3 class="dotdot line2 image-margin-right">
                         {{item.title}}
@@ -110,7 +110,7 @@ export default {
           'WALLAN-TOKEN': '5d4139e70b35803e75414ddef0f57cd9',
           'WALLAN-DEVICENUM':'12000000000'
         },
-        url:this.GLOBAL.serverUrl+'/?tag='+pay.kind
+        url:this.GLOBAL.serverUrl+'/index'+'?tag='+pay.kind
       };
       axios(options)
         .then(function (res){
@@ -132,7 +132,7 @@ export default {
           'WALLAN-TOKEN': '5d4139e70b35803e75414ddef0f57cd9',
           'WALLAN-DEVICENUM':'12000000000'
         },
-        url:this.GLOBAL.serverUrl+'/?tag='+payload.kind
+        url:mode?this.GLOBAL.serverUrl+'/more'+'?tag='+payload.kind+'&type=new':this.GLOBAL.serverUrl+'/more'+'/?tag='+payload.kind+'&type=history'
       };
       axios(options)
           .then(function(res){

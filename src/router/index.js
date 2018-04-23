@@ -52,7 +52,7 @@ router.beforeEach((to, from, next) => {
   console.log(md5(token+deviceNum));
   if(to.meta.requiresAuth){
     
-    if(md5(token+deviceNum) == signature){
+    if(md5(token+deviceNum) != signature){
       console.log("验证成功");
       next()
     }else{
