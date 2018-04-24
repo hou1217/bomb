@@ -245,7 +245,7 @@
 }
 .li-content p {
   margin-top: 24px;
-  font-size: 20px;
+  font-size: 32px;
   color: #000;
   line-height: 50px;
 }

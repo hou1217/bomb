@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   border: 0;
+  font-family:'STHeiti', 'Microsoft YaHei', 'Helvetica', 'Arial', sans-serif;
 }
 
 body {
@@ -218,7 +219,7 @@ content.feed-list-container .article_link {
 }
 content.feed-list-container h3 {
   color: #303036;
-  font-size: 30px;
+  font-size: 34px;
   line-height: 42px;
   font-weight: normal;
   overflow: hidden;
