@@ -138,6 +138,7 @@
 	  
 	  methods:{
 	    getDatas(pay){
+	      console.log(this.GLOBAL.serverUrl+'/media-dc/article/detail'+'?id='+pay.kind);
 	      const options = {
           method: 'GET',
           headers: {
@@ -145,28 +146,28 @@
             'WALLAN-TOKEN': '5d4139e70b35803e75414ddef0f57cd9',
             'WALLAN-DEVICENUM':'12000000000'
           },
-          url:this.GLOBAL.serverUrl+'/article/detail'+'?id='+pay.kind
+          url:this.GLOBAL.serverUrl+'/media-dc/article/detail'+'?id='+pay.kind
         };
         axios(options)
           .then(function (res){
-            console.log(res.data.article);
+            console.log(res);
             console.log(pay.kind);
             this.loading = false;
-//          this.articleList = res.data.articles;
-            this.time = res.data.article.createdAt;
-            this.title = res.data.article.title;
-            this.mediaNames = res.data.article.media.name;
-            this.portraitUrl = res.data.article.media.portraitUrl;
-            this.mediaNames = res.data.article.media.name;
-            this.mediaId = res.data.article.media.id;
-            this.keywords = res.data.article.keywords;
-            this.content = res.data.article.items;
-            this.origin = res.data.article.origin;
-            this.originUrl = res.data.article.originUrl;
-            this.originAuthor = res.data.article.originAuthor;
-            this.linkes = res.data.article.likes;
-            this.mediaFans = res.data.article.media.fans;
-            this.mediaFollows = res.data.article.media.follows;
+//          this.dataList = res.data.datas;
+            this.time = res.data.data.createdAt;
+            this.title = res.data.data.title;
+            this.mediaNames = res.data.data.media.name;
+            this.portraitUrl = res.data.data.media.portraitUrl;
+            this.mediaNames = res.data.data.media.name;
+            this.mediaId = res.data.data.media.id;
+            this.keywords = res.data.data.keywords;
+            this.content = res.data.data.items;
+            this.origin = res.data.data.origin;
+            this.originUrl = res.data.data.originUrl;
+            this.originAuthor = res.data.data.originAuthor;
+            this.linkes = res.data.data.likes;
+            this.mediaFans = res.data.data.media.fans;
+            this.mediaFollows = res.data.data.media.follows;
           }.bind(this))
           .catch(function (error) {
             console.log(error);

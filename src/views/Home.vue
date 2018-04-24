@@ -110,14 +110,14 @@ export default {
           'WALLAN-TOKEN': '5d4139e70b35803e75414ddef0f57cd9',
           'WALLAN-DEVICENUM':'12000000000'
         },
-        url:this.GLOBAL.serverUrl+'/index'+'?tag='+pay.kind
+        url:this.GLOBAL.serverUrl+'/media-dc/index'+'?tag='+pay.kind
       };
       axios(options)
         .then(function (res){
           console.log(res.data);
           console.log(pay.kind);
           this.loading = false;
-          this.articleList = res.data.articles;
+          this.articleList = res.data.data;
         }.bind(this))
         .catch(function (error) {
           console.log(error);
@@ -132,7 +132,7 @@ export default {
           'WALLAN-TOKEN': '5d4139e70b35803e75414ddef0f57cd9',
           'WALLAN-DEVICENUM':'12000000000'
         },
-        url:mode?this.GLOBAL.serverUrl+'/more'+'?tag='+payload.kind+'&type=new':this.GLOBAL.serverUrl+'/more'+'/?tag='+payload.kind+'&type=history'
+        url:mode?this.GLOBAL.serverUrl+'/media-dc/more'+'?tag='+payload.kind+'&type=new':this.GLOBAL.serverUrl+'/media-dc/more'+'/?tag='+payload.kind+'&type=history'
       };
       axios(options)
           .then(function(res){
@@ -140,7 +140,7 @@ export default {
             console.log(res.data); 
             // 将新获取的数据push到vue中的data，就会反应到视图中了
             let _this = this;
-            res.data.articles.forEach(function(val,index){  
+            res.data.data.forEach(function(val,index){  
 //            console.log(val);
 							if(!mode){
 	              _this.articleList.push(val); 
