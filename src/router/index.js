@@ -17,7 +17,6 @@ const router = new Router({
       path: '/home/:type',
       name: 'Home',
       component: Home,
-      meta: { requiresAuth: true }
     },
     {
       path: '/newsDetail',
@@ -29,15 +28,14 @@ const router = new Router({
       name: 'Fail',
       component: Fail,
     },
-/*    {
-      path: '/',
-      component: Home,
-      meta: { requiresAuth: true }
-    },*/
     {
-        path: '',
-        redirect: '/home/all?type=__all__'
+      path: '*',
+      meta: { requiresAuth: true }
     },
+    /*{
+        path: '/',
+        redirect: '/home/all?type=__all__',
+    },*/
 
   ]
 })
@@ -46,18 +44,17 @@ router.beforeEach((to, from, next) => {
   let token = window.location.search.substring(14,46);
   let deviceNum = window.location.search.substring(64,75);
   let signature = window.location.search.substring(86);
-  console.log(token);
+  /*console.log(token);
   console.log(deviceNum);
   console.log(signature);
-  console.log(md5(token+deviceNum));
+  console.log(md5(token+deviceNum));*/
   if(to.meta.requiresAuth){
     
     if(md5(token+deviceNum) != signature){
       console.log("验证成功");
-      next()
+      next('/home/all?type=__all__')
     }else{
       console.log("验证失败");
-      
       next('/fail')
     }
   }else{

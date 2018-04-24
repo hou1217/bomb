@@ -35,7 +35,6 @@
       </div>
       <div class="list_img_holder">
         <img src="../assets/images/new_picture.png">
-        <span class="video-btn"></span>
       </div>
     </a>
   </section>

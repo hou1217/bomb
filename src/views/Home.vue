@@ -28,21 +28,24 @@
             <transition enter-active-class="bounceInLeft" leave-active-class="bounceOutRight">
               <div class="list-content animated">
                 <section class="middle_mode has_action" data-hot-time="" data-group-id="" data-item-id="" data-format="0" v-for="(item,index) in articleList" :key="index">
-                  <router-link :to="{name:'newsDetail',query:{id:item.articleId}}" class="article_link clearfix " data-action-label="" data-tag="">
-                    <div class="item_detail desc">
-                      <h3 class="dotdot line2 image-margin-right">
+                  <router-link :to="{
+                    name:'newsDetail',
+                    query:{id:item.articleId}
+                    }" class="article_link clearfix " data-action-label="" data-tag="">
+                    <div class="item_detail" :class="(item.coverNum==1)? 'desc':''">
+                      <h3 class="dotdot line2" :class="(item.coverNum==1)?'image-margin-right':''">
                         {{item.title}}
                       </h3>
                       <div class="item_info">
                         <div>
                           <span class="hot_label space">热</span>
-                          <span class="src space">生活就是娱乐</span>
-                          <span class="cmt space">评论 30</span>
-                          <span class="time" title="2018-04-12 09:34">{{item.time | formatDate}}</span>
+                          <span class="src space">{{item.originAuthor}}</span>
+                          <span class="cmt space">点击 {{item.reads}}</span>
+                          <span class="time">{{item.time | formatDate}}</span>
                         </div>
                       </div>
                     </div>
-                    <div class="list_img_holder">
+                    <div class="list_img_holder" v-if="item.coverNum==1">
                       <img :src="item.coverUrl">
                     </div>
                   </router-link>
@@ -50,8 +53,11 @@
               </div>
             </transition>
             <div class="list_bottom">
-              <section class="loadmoretip">
+              <section class="loadmoretip" v-show="!loaded">
                 <a href="#">加载中...</a>
+              </section>
+              <section class="loadmoretip" v-show="noData">
+                <a href="#">暂无数据...</a>
               </section>
             </div>
           </content>
@@ -85,10 +91,27 @@ export default {
       return formatDate(date,'yyyy-MM-dd hh:mm');
     }
   },
-
+  
   
   methods:{
-  	
+  	tabScroll(){
+      window.addEventListener("scroll",this.handleScroll);
+    },
+    handleScroll(){
+      // 判断是否滚动到底部  
+      if(getScrollTop() + getWindowHeight() >= getScrollHeight()) {    
+        // 如果开关打开则加载数据  
+        if(this.sw==true){  
+          // 将开关关闭  
+          this.sw = false; 
+          this.loaded = false;
+          // 此处使用node做了代理
+          this.loadMoreDatas({
+            kind:this.$route.query.type,
+          },false);
+        }  
+      }  
+    },
     getDatas(pay){
       //调用自己封装的AJAX方法
       /*ajaxJSON("GET",this.GLOBAL.serverUrl+'/?tag='+pay.kind)
@@ -96,7 +119,7 @@ export default {
         console.log(res);
 //      console.log(res.headers);
         //console.log(pay.kind);
-        this.loading = false;
+        this.loaded = false;
         this.articleList = res.articles;
       }.bind(this))
       .catch(function (error) {
@@ -116,7 +139,10 @@ export default {
         .then(function (res){
           console.log(res.data);
           console.log(pay.kind);
-          this.loading = false;
+          if(!res.data.data){
+            this.noData = true;
+          }
+          this.loaded = true;
           this.articleList = res.data.data;
         }.bind(this))
         .catch(function (error) {
@@ -157,9 +183,7 @@ export default {
     }
 
   },
-  created(){
-    
-  },
+  
   mounted(){
     //加载完成后执行
     this.getDatas({
@@ -167,20 +191,7 @@ export default {
     });
 //  console.log(this.GLOBAL.serverUrl);
     console.log(this.$route.query.type);
-    window.addEventListener('scroll',()=>{   
-        // 判断是否滚动到底部  
-        if(getScrollTop() + getWindowHeight() >= getScrollHeight()) {    
-          // 如果开关打开则加载数据  
-          if(this.sw==true){  
-            // 将开关关闭  
-            this.sw = false; 
-            // 此处使用node做了代理
-            this.loadMoreDatas({
-              kind:this.$route.query.type,
-            },false);
-          }  
-        }  
-    });
+    this.tabScroll();
     const oDiv2 = this.$refs.div2;
     const oDiv1 = this.$refs.div1;
     oDiv2.addEventListener('touchstart', (e) => {
@@ -239,21 +250,35 @@ export default {
       }    
     })
   },
+  beforeDestroy(){
+    window.removeEventListener("scroll",this.handleScroll);
+  },
+  destroyed(){
+    //销毁后
+    console.log("homePage destroyed");
+    
+  },
   watch:{
+    
     //监听路由的type类型改变
     '$route':function(){
+      console.log('监听到路由变化了');
+      this.loaded = false;
+      this.noData = false;
+//    console.log(this.loaded);
       this.getDatas({
         kind:this.$route.query.type,
       });
       document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
-      
       this.first = window.location.search.substring(6);
     },
   },
   data () {
     return {
+      isDesc:false,
     	isRotate:false,
-      loading : true,
+      loaded: false,
+      noData:false, 
       articleList:[],
       status1:true,
       status2:false,
@@ -276,36 +301,10 @@ export default {
           url:'/home/hot',
           type:'news_hot'
         },
-        {
-          text:'社会',
-          url:'/home/society',
-          type:'news_society'
-        },
-        {
-          text:'汽车',
-          url:'/home/car',
-          type:'news_car'
-        },
-        {
-          text:'上海',
-          url:'/home/shanghai',
-          type:'news_shanghai'
-        },
-        {
-          text:'军事',
-          url:'/home/military',
-          type:'news_military'
-        },
-        {
-          text:'体育',
-          url:'/home/sports',
-          type:'news_sports'
-        },
-        {
-          text:'财经',
-          url:'/home/finance',
-          type:'news_finance'
-        },
+        
+        
+      
+        
         ],
         first:window.location.search.substring(6),
         sw:true,

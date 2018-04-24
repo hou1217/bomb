@@ -135,10 +135,8 @@
         likes:0,
 	    }
 	  },
-	  
 	  methods:{
-	    getDatas(pay){
-	      console.log(this.GLOBAL.serverUrl+'/media-dc/article/detail'+'?id='+pay.kind);
+	    getDetail(pay){
 	      const options = {
           method: 'GET',
           headers: {
@@ -173,14 +171,16 @@
             console.log(error);
           });
       },
-      
 	  },
 	  mounted(){
-	    //加载完成后执行
-      this.getDatas({
+      this.getDetail({
         kind:this.$route.query.id,
       });
-	  }
+      document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
+	  },
+	  destroyed(){
+      console.log("detailPage destroyed");
+    },
 	}
 </script>
 
