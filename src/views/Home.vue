@@ -99,7 +99,7 @@ export default {
     },
     handleScroll(){
       // 判断是否滚动到底部  
-      if(getScrollTop() + getWindowHeight() >= getScrollHeight()) {    
+      if(getScrollTop() + getWindowHeight() >= (getScrollHeight() - 30)) {    
         // 如果开关打开则加载数据  
         if(this.sw==true){  
           // 将开关关闭  
@@ -113,18 +113,7 @@ export default {
       }  
     },
     getDatas(pay){
-      //调用自己封装的AJAX方法
-      /*ajaxJSON("GET",this.GLOBAL.serverUrl+'/?tag='+pay.kind)
-      .then(function(res){
-        console.log(res);
-//      console.log(res.headers);
-        //console.log(pay.kind);
-        this.loaded = false;
-        this.articleList = res.articles;
-      }.bind(this))
-      .catch(function (error) {
-        console.log(error);
-      });*/
+      console.log("加载文章列表...");
      //调用axios plugin
       const options = {
         method: 'GET',
@@ -150,7 +139,7 @@ export default {
         });
     },
     loadMoreDatas(payload,mode){
-      console.log("加载新的数据了.....");
+      console.log("加载更多文章...");
       const options = {
         method: 'GET',
         headers: {
@@ -190,7 +179,7 @@ export default {
       kind:this.$route.query.type,
     });
 //  console.log(this.GLOBAL.serverUrl);
-    console.log(this.$route.query.type);
+//  console.log(this.$route.query.type);
     this.tabScroll();
     const oDiv2 = this.$refs.div2;
     const oDiv1 = this.$refs.div1;
@@ -266,10 +255,13 @@ export default {
       this.loaded = false;
       this.noData = false;
 //    console.log(this.loaded);
-      this.getDatas({
-        kind:this.$route.query.type,
-      });
-      document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
+      if(this.$route.query.type){
+        this.getDatas({
+          kind:this.$route.query.type,
+        });
+      }
+      
+      //document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
       this.first = window.location.search.substring(6);
     },
   },

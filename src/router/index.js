@@ -17,11 +17,17 @@ const router = new Router({
       path: '/home/:type',
       name: 'Home',
       component: Home,
+      meta: {
+        keepAlive: true
+      },
     },
     {
       path: '/newsDetail',
       name: 'newsDetail',
       component: Detail,
+      meta: {
+        keepAlive: false
+      }
     },
     {
       path: '/fail',

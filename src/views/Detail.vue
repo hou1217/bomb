@@ -137,6 +137,7 @@
 	  },
 	  methods:{
 	    getDetail(pay){
+	      console.log("加载文章详情...");
 	      const options = {
           method: 'GET',
           headers: {
@@ -149,7 +150,7 @@
         axios(options)
           .then(function (res){
             console.log(res);
-            console.log(pay.kind);
+            console.log("id:"+pay.kind);
             this.loading = false;
 //          this.dataList = res.data.datas;
             this.time = res.data.data.createdAt;
@@ -185,10 +186,7 @@
 </script>
 
 <style scoped>
-.container{
-  font-family: 'Microsoft YaHei','Helvetica','Arial',sans-serif;
-  font-size: 14px;
-}
+
 .detail ul{
   -webkit-padding-start: 0;
 }
@@ -244,10 +242,10 @@
   margin-top: 80px;
 }
 .li-content p {
-  margin-top: 24px;
-  font-size: 32px;
+  margin-top: 32px;
+  font-size: 34px;
   color: #000;
-  line-height: 50px;
+  line-height: 54px;
 }
 .li-keywords{
   margin-top: 80px;
@@ -315,7 +313,7 @@ a{
     width: -webkit-calc(100% + 60px);
     width: -moz-calc(100% + 60px);
     width: calc(100% + 60px); */
-  margin: 24px auto 0;
+  margin: 32px auto 0;
     /*max-height: 460px;*/
     /*max-width: 100%;*/
   display: block;

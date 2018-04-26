@@ -1,10 +1,11 @@
  <template>
   <div id="app">
-    <transition>
-<!--      <keep-alive>-->
-        <router-view v-cloak></router-view>
-      <!--</keep-alive>--> 
-    </transition>
+    <!--<transition>-->
+      <keep-alive>
+          <router-view v-if="$route.meta.keepAlive"></router-view>
+      </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive"></router-view> 
+    <!--</transition>-->
   </div>
 </template>
 <script>
