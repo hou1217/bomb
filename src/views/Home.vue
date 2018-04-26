@@ -99,7 +99,7 @@ export default {
     },
     handleScroll(){
       // 判断是否滚动到底部  
-      if(getScrollTop() + getWindowHeight() >= (getScrollHeight() - 30)) {    
+      if(getScrollTop() + getWindowHeight() >= (getScrollHeight() - 60)) {    
         // 如果开关打开则加载数据  
         if(this.sw==true){  
           // 将开关关闭  
@@ -128,7 +128,7 @@ export default {
       if(this.isdrag && getScrollTop() == 0) {
         let x = e.touches[0].pageY - this.disY;
         //向下滑动
-        if( x > 0 && Math.abs(x) < 120) {
+        if( x > 0 && x < 120) {
           this.status1=true;
           this.status2=false;
           
@@ -136,7 +136,7 @@ export default {
           
           this.flag = false;
           return false;
-        }else if(x >= 120 && Math.abs(x) < 156){
+        }else if(x > 120 && x < 156){
           this.status1=false;
           this.status2=true;
           this.$refs.div1.style.transform = "translate(0px, "+ x +"px)";
@@ -165,6 +165,7 @@ export default {
         this.loadMoreDatas({
           kind:this.$route.query.type,
         },true);
+        this.flag = false;
         let _this = this;
         setTimeout(function(){
           _this.status1=true;
@@ -275,6 +276,8 @@ export default {
         console.log(from.name);
         if(from.name == "newsDetail"){
           this.flag2 = false;
+        }else{
+          this.flag2 = true;
         }
         this.getDatas({
           kind:this.$route.query.type,
