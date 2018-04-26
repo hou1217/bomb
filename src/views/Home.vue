@@ -112,31 +112,102 @@ export default {
         }  
       }  
     },
+    touchStart(){
+      this.$refs.div2.addEventListener('touchstart', this.start)
+    },
+    start(e){
+      console.log('touchstart');
+      this.isdrag = true;
+      this.disY = e.touches[0].pageY;
+      return false;
+    },
+    touchMove(){
+      this.$refs.div2.addEventListener('touchmove', this.move)
+    },
+    move(e){
+      if(this.isdrag && getScrollTop() == 0) {
+        let x = e.touches[0].pageY - this.disY;
+        //向下滑动
+        if( x > 0 && Math.abs(x) < 120) {
+          this.status1=true;
+          this.status2=false;
+          
+          this.$refs.div1.style.transform = "translate(0px, "+ x +"px)";
+          
+          this.flag = false;
+          return false;
+        }else if(x >= 120 && Math.abs(x) < 156){
+          this.status1=false;
+          this.status2=true;
+          this.$refs.div1.style.transform = "translate(0px, "+ x +"px)";
+          //console.log(x);
+          this.flag = true;
+          return false;
+        } 
+        
+      }else{
+        this.flag = false;
+      }
+    },
+    touchEnd(){
+      this.$refs.div2.addEventListener('touchend', this.end)
+    },
+    end(e){
+      console.log('touchend');
+      this.isdrag = false;
+      
+      if(this.flag){
+        this.status2=false;
+        this.status3=true;
+//      document.querySelector(".refresh_btn").className += (' '+'rotate');//转动标题栏的图标
+        this.isRotate = true;
+          //document.location.reload();//1秒后重新加载当前页面
+        this.loadMoreDatas({
+          kind:this.$route.query.type,
+        },true);
+        let _this = this;
+        setTimeout(function(){
+          _this.status1=true;
+          _this.status3=false;
+          _this.$refs.div1.style.transform = "translate(0px, -4px)";
+          _this.isRotate = false;
+        },500);
+      }else{
+        this.status1=true;
+        this.status2=false;
+        this.$refs.div1.style.transform = "translate(0px, -4px)";
+      }    
+    },
     getDatas(pay){
-      console.log("加载文章列表...");
-     //调用axios plugin
-      const options = {
-        method: 'GET',
-        headers: {
-          'content-type': 'application/json;',
-          'WALLAN-TOKEN': '5d4139e70b35803e75414ddef0f57cd9',
-          'WALLAN-DEVICENUM':'12000000000'
-        },
-        url:this.GLOBAL.serverUrl+'/media-dc/index'+'?tag='+pay.kind
-      };
-      axios(options)
-        .then(function (res){
-          console.log(res.data);
-          console.log(pay.kind);
-          if(!res.data.data){
-            this.noData = true;
-          }
-          this.loaded = true;
-          this.articleList = res.data.data;
-        }.bind(this))
-        .catch(function (error) {
-          console.log(error);
-        });
+
+      if(this.flag2){
+        console.log("加载文章列表...");
+        
+        //调用axios plugin
+        const options = {
+          method: 'GET',
+          headers: {
+            'content-type': 'application/json;',
+            'WALLAN-TOKEN': '5d4139e70b35803e75414ddef0f57cd9',
+            'WALLAN-DEVICENUM':'12000000000'
+          },
+          url:this.GLOBAL.serverUrl+'/media-dc/index'+'?tag='+pay.kind
+        };
+        axios(options)
+          .then(function (res){
+            console.log(res.data);
+            console.log(pay.kind);
+            if(!res.data.data){
+              this.noData = true;
+            }
+            this.loaded = true;
+            this.articleList = res.data.data;
+          }.bind(this))
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+     
     },
     loadMoreDatas(payload,mode){
       console.log("加载更多文章...");
@@ -181,63 +252,9 @@ export default {
 //  console.log(this.GLOBAL.serverUrl);
 //  console.log(this.$route.query.type);
     this.tabScroll();
-    const oDiv2 = this.$refs.div2;
-    const oDiv1 = this.$refs.div1;
-    oDiv2.addEventListener('touchstart', (e) => {
-      console.log('touchstart');
-      this.isdrag = true;
-      this.disY = e.touches[0].pageY;
-      return false;
-    })
-    oDiv2.addEventListener('touchmove', (e) => {
-      if(this.isdrag) {
-        let x = e.touches[0].pageY - this.disY;
-        //向下滑动
-        if( x > 0 && Math.abs(x) < 120) {
-          this.status1=true;
-          this.status2=false;
-          
-          oDiv1.style.transform = "translate(0px, "+ x +"px)";
-          
-          this.flag = false;
-          return false;
-        }else if(x >= 120 && Math.abs(x) < 156){
-          this.status1=false;
-          this.status2=true;
-          oDiv1.style.transform = "translate(0px, "+ x +"px)";
-          //console.log(x);
-          this.flag = true;
-          return false;
-        } 
-        
-      }
-    })
-    oDiv2.addEventListener('touchend', (e) => {
-      console.log('touchend');
-      this.isdrag = false;
-      
-      if(this.flag){
-        this.status2=false;
-        this.status3=true;
-//      document.querySelector(".refresh_btn").className += (' '+'rotate');//转动标题栏的图标
-				this.isRotate = true;
-          //document.location.reload();//1秒后重新加载当前页面
-				this.loadMoreDatas({
-          kind:this.$route.query.type,
-        },true);
-        let _this = this;
-    		setTimeout(function(){
-        	_this.status1=true;
-					_this.status3=false;
-    			oDiv1.style.transform = "translate(0px, -4px)";
-    			_this.isRotate = false;
-        },500);
-      }else{
-        this.status1=true;
-        this.status2=false;
-        oDiv1.style.transform = "translate(0px, -4px)";
-      }    
-    })
+    this.touchStart();
+    this.touchMove();
+    this.touchEnd();
   },
   beforeDestroy(){
     window.removeEventListener("scroll",this.handleScroll);
@@ -250,23 +267,27 @@ export default {
   watch:{
     
     //监听路由的type类型改变
-    '$route':function(){
-      console.log('监听到路由变化了');
-      this.loaded = false;
-      this.noData = false;
-//    console.log(this.loaded);
-      if(this.$route.query.type){
+    '$route'(from,to){
+      
+        this.loaded = false;
+        this.noData = false;
+  //    console.log(this.loaded);
+        console.log(from.name);
+        if(from.name == "newsDetail"){
+          this.flag2 = false;
+        }
         this.getDatas({
           kind:this.$route.query.type,
         });
-      }
+        //document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
+        this.first = window.location.search.substring(6);
       
-      //document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
-      this.first = window.location.search.substring(6);
+      
     },
   },
   data () {
     return {
+      flag2:true,
       isDesc:false,
     	isRotate:false,
       loaded: false,
