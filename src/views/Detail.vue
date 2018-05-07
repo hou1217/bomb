@@ -137,7 +137,7 @@
 	  },
 	  methods:{
 	    getDetail(pay){
-	      console.log("加载文章详情...");
+	      console.log("加载文章详情！");
 	      const options = {
           method: 'GET',
           headers: {
@@ -149,8 +149,8 @@
         };
         axios(options)
           .then(function (res){
-            console.log(res);
-            console.log("id:"+pay.kind);
+            //console.log(res);
+            console.log("文章的id:"+pay.kind);
             this.loading = false;
 //          this.dataList = res.data.datas;
             this.time = res.data.data.createdAt;

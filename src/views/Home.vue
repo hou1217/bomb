@@ -182,7 +182,7 @@ export default {
     getDatas(pay){
 
       if(this.flag2){
-        console.log("加载文章列表...");
+        console.log("加载文章列表！");
         
         //调用axios plugin
         const options = {
@@ -203,6 +203,8 @@ export default {
             }
             this.loaded = true;
             this.articleList = res.data.data;
+            
+            sessionStorage.setItem("data",JSON.stringify(this.articleList));  
           }.bind(this))
           .catch(function (error) {
             console.log(error);
@@ -230,11 +232,13 @@ export default {
             res.data.data.forEach(function(val,index){  
 //            console.log(val);
 							if(!mode){
-	              _this.articleList.push(val); 
+	              _this.articleList.push(val);
 							}else{
 	              _this.articleList.unshift(val); 
 							}
-            });  
+            });
+            sessionStorage.setItem("data",JSON.stringify(this.articleList));  
+            
             // 数据更新完毕，将开关打开  
             this.sw = true;  
           }.bind(this))  
@@ -268,20 +272,28 @@ export default {
   watch:{
     
     //监听路由的type类型改变
-    '$route'(from,to){
+    '$route'(to,from){
       
         this.loaded = false;
         this.noData = false;
   //    console.log(this.loaded);
-        console.log(from.name);
-        if(from.name == "newsDetail"){
-          this.flag2 = false;
-        }else{
-          this.flag2 = true;
+        //console.log(from.name);
+        //console.log(to.name);
+        
+        //console.log(this.articleList);
+        if(from.name == 'newsDetail' && to.name == 'Home'){
+          console.log('从详情页返回home页！');
+          //console.log(this.articleList);
+          return false;
+        }else if(to.name == 'newsDetail' && from.name == 'Home'){
+          console.log('从home页进入详情页！');
+          return false;
         }
         this.getDatas({
           kind:this.$route.query.type,
         });
+        
+        
         //document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
         this.first = window.location.search.substring(6);
       
