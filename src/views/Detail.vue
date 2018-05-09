@@ -137,7 +137,7 @@
 	  },
 	  methods:{
 	    getDetail(pay){
-	      console.log("加载文章详情！");
+	      console.log("加载文章详情。");
 	      const options = {
           method: 'GET',
           headers: {

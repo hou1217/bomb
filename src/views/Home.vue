@@ -95,17 +95,19 @@ export default {
   
   methods:{
   	tabScroll(){
-      window.addEventListener("scroll",this.handleScroll);
+  	  if(document.body){
+        document.addEventListener("scroll",this.handleScroll);
+  	  }
     },
     handleScroll(){
       // 判断是否滚动到底部  
-      if(getScrollTop() + getWindowHeight() >= (getScrollHeight() - 60)) {    
+      if(getScrollTop() + getWindowHeight() >= (getScrollHeight() - 180)) {    
         // 如果开关打开则加载数据  
         if(this.sw==true){  
           // 将开关关闭  
           this.sw = false; 
           this.loaded = false;
-          // 此处使用node做了代理
+          // 加载更多的数据
           this.loadMoreDatas({
             kind:this.$route.query.type,
           },false);
@@ -119,6 +121,7 @@ export default {
       console.log('touchstart');
       this.isdrag = true;
       this.disY = e.touches[0].pageY;
+      
       return false;
     },
     touchMove(){
@@ -128,7 +131,7 @@ export default {
       if(this.isdrag && getScrollTop() == 0) {
         let x = e.touches[0].pageY - this.disY;
         //向下滑动
-        if( x > 0 && x < 120) {
+        if( x > 0 && x < 100) {
           this.status1=true;
           this.status2=false;
           
@@ -136,7 +139,7 @@ export default {
           
           this.flag = false;
           return false;
-        }else if(x > 120 && x < 156){
+        }else if(x > 100 && x < 156){
           this.status1=false;
           this.status2=true;
           this.$refs.div1.style.transform = "translate(0px, "+ x +"px)";
@@ -159,9 +162,7 @@ export default {
       if(this.flag){
         this.status2=false;
         this.status3=true;
-//      document.querySelector(".refresh_btn").className += (' '+'rotate');//转动标题栏的图标
         this.isRotate = true;
-          //document.location.reload();//1秒后重新加载当前页面
         this.loadMoreDatas({
           kind:this.$route.query.type,
         },true);
@@ -182,8 +183,9 @@ export default {
     getDatas(pay){
 
       if(this.flag2){
-        console.log("加载文章列表！");
-        
+        this.flag2 = false;
+        console.log(new Date());
+        console.log("加载文章列表。");
         //调用axios plugin
         const options = {
           method: 'GET',
@@ -196,24 +198,26 @@ export default {
         };
         axios(options)
           .then(function (res){
+            console.log('当前页是：'+pay.kind);
             console.log(res.data);
-            console.log(pay.kind);
             if(!res.data.data){
               this.noData = true;
             }
             this.loaded = true;
             this.articleList = res.data.data;
-            
+            //本地session存储
             sessionStorage.setItem("data",JSON.stringify(this.articleList));  
           }.bind(this))
           .catch(function (error) {
             console.log(error);
           });
+        this.flag2 = true;
       }
      
     },
     loadMoreDatas(payload,mode){
-      console.log("加载更多文章...");
+      console.log(new Date());
+      console.log("加载更多文章。");
       const options = {
         method: 'GET',
         headers: {
@@ -225,7 +229,7 @@ export default {
       };
       axios(options)
           .then(function(res){
-            console.log(payload.kind);
+            console.log('当前页是：'+payload.kind);
             console.log(res.data); 
             // 将新获取的数据push到vue中的data，就会反应到视图中了
             let _this = this;
@@ -262,6 +266,7 @@ export default {
     this.touchEnd();
   },
   beforeDestroy(){
+    //销毁前
     window.removeEventListener("scroll",this.handleScroll);
   },
   destroyed(){
@@ -279,16 +284,21 @@ export default {
   //    console.log(this.loaded);
         //console.log(from.name);
         //console.log(to.name);
-        
         //console.log(this.articleList);
-        if(from.name == 'newsDetail' && to.name == 'Home'){
+        
+        //特殊情况判断：如果是从home页进入详情页或者从详情页进入home页都不加载新的数据
+        if(from.name === 'newsDetail' && to.name === 'Home'){
           console.log('从详情页返回home页！');
-          //console.log(this.articleList);
+          //打开开关
+          this.sw = true;
           return false;
-        }else if(to.name == 'newsDetail' && from.name == 'Home'){
+        }else if(to.name === 'newsDetail' && from.name === 'Home'){
           console.log('从home页进入详情页！');
+          //关闭开关
+          this.sw = false;
           return false;
         }
+        //根据路由的type类型从而加载新的数据
         this.getDatas({
           kind:this.$route.query.type,
         });
