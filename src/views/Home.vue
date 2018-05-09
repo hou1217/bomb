@@ -231,16 +231,20 @@ export default {
           .then(function(res){
             console.log('当前页是：'+payload.kind);
             console.log(res.data); 
-            // 将新获取的数据push到vue中的data，就会反应到视图中了
+            // 将新获取的数据加入到vue中的data，就会反应到视图中了
             let _this = this;
-            res.data.data.forEach(function(val,index){  
-//            console.log(val);
-							if(!mode){
-	              _this.articleList.push(val);
-							}else{
-	              _this.articleList.unshift(val); 
-							}
-            });
+            if(res.data.data){
+              res.data.data.forEach(function(val,index){  
+                //console.log(val);
+                //分2种情况进行处理：1.插入到数组后面；2.插入到数组前面
+                if(!mode){
+                  _this.articleList.push(val);
+                }else{
+                  _this.articleList.unshift(val); 
+                }
+              });
+            }
+            
             sessionStorage.setItem("data",JSON.stringify(this.articleList));  
             
             // 数据更新完毕，将开关打开  
@@ -281,7 +285,7 @@ export default {
       
         this.loaded = false;
         this.noData = false;
-  //    console.log(this.loaded);
+        //console.log(this.loaded);
         //console.log(from.name);
         //console.log(to.name);
         //console.log(this.articleList);
@@ -303,9 +307,9 @@ export default {
           kind:this.$route.query.type,
         });
         
-        
-        //document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
-        this.first = window.location.search.substring(6);
+        //滚动条回到顶部
+        //document.body.scrollTop = document.documentElement.scrollTop = 0;
+        //this.first = window.location.search.substring(6);
       
       
     },
@@ -321,9 +325,17 @@ export default {
       status1:true,
       status2:false,
       status3:false,
-//    mode:false,
+      //first:window.location.search.substring(6),
+      sw:true,
+      isdrag : false,
+      NowTop : 100,
+      flag   : false,
+      moveY : 0,
+      toTop : 0,
+      disEndY : 0,
+      disY : 0,
       //频道
-        navbar:[
+      navbar:[
         {
           text:'推荐',
           url:'/home/all',
@@ -339,20 +351,8 @@ export default {
           url:'/home/hot',
           type:'news_hot'
         },
+      ],
         
-        
-      
-        
-        ],
-        first:window.location.search.substring(6),
-        sw:true,
-        isdrag : false,
-        NowTop : 100,
-        flag   : false,
-        moveY : 0,
-        toTop : 0,
-        disEndY : 0,
-        disY : 0,
     }
   },
 
