@@ -1,6 +1,6 @@
 <template>
   <div class="indexContainer withHeader">
-  	<!--头部-->
+    <!--头部-->
     <headers :isRotate="isRotate"></headers>
     <div>
 	    <div class="top_menu_bar">
@@ -230,19 +230,25 @@ export default {
       axios(options)
           .then(function(res){
             console.log('当前页是：'+payload.kind);
-            console.log(res.data); 
+            console.log(res.data.data); 
             // 将新获取的数据加入到vue中的data，就会反应到视图中了
             let _this = this;
             if(res.data.data){
-              res.data.data.forEach(function(val,index){  
+              //分2种情况进行处理：1.新数据填到原数组后面；2.新数据填到原数组前面
+              if(!mode){
+                this.articleList=this.articleList.concat(res.data.data);
+              }else{
+                this.articleList=res.data.data.concat(this.articleList);
+              }
+              /*res.data.data.forEach(function(val,index){  
                 //console.log(val);
-                //分2种情况进行处理：1.插入到数组后面；2.插入到数组前面
+                
                 if(!mode){
                   _this.articleList.push(val);
                 }else{
                   _this.articleList.unshift(val); 
                 }
-              });
+              });*/
             }
             
             sessionStorage.setItem("data",JSON.stringify(this.articleList));  
