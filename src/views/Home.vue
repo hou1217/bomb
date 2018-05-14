@@ -103,12 +103,13 @@ export default {
     },
     handleScroll(){
       // 判断是否滚动到底部  
-      if(getScrollTop() + getWindowHeight() >= (getScrollHeight() - 180)) {    
+      if(getScrollTop() + getWindowHeight() >= (getScrollHeight() - 180) && !this.noData) {    
         // 如果开关打开则加载数据  
         if(this.sw==true){  
           // 将开关关闭  
           this.sw = false; 
           this.loaded = false;
+          
           // 加载更多的数据
           this.loadMoreDatas({
             kind:this.$route.query.type,
@@ -122,6 +123,7 @@ export default {
     start(e){
       console.log('touchstart');
       this.isdrag = true;
+      this.disX = e.touches[0].pageX;
       this.disY = e.touches[0].pageY;
       return false;
     },
@@ -132,11 +134,25 @@ export default {
       /*
        * flag是触发ajax的核心开关，flag默认为false，当flag为true时可触发ajax
        * 需要同时满足滚动条位置在顶部和手指触屏才行，否则flag为false
-       * y是手指在屏幕上竖直滑动的距离
+       * x是手指在屏幕上水平滑动的距离,x>0,向右滑动;x<0,向左滑动
+       * y是手指在屏幕上竖直滑动的距离,y>0,向下滑动;y<0,向上滑动
        * */
       if(this.isdrag && getScrollTop() == 0) {
+        let x = e.touches[0].pageX - this.disX;
         let y = e.touches[0].pageY - this.disY;
-        //y>0,向下滑动;y<0,向上滑动
+        if(x > 150 && document.querySelector(".router-link-active").nextElementSibling && this.flag3){
+          console.log('右滑切换频道');
+          document.querySelector(".router-link-active").nextElementSibling.click();
+          this.flag3 = false;
+          
+          return false;
+        }else if(x < -150 && document.querySelector(".router-link-active").previousElementSibling && this.flag3){
+          console.log('左滑切换频道');
+          document.querySelector(".router-link-active").previousElementSibling.click();
+          this.flag3 = false;
+          
+          return false;
+        }
         if( y > 0 && y < 100) {
           this.status1=true;
           this.status2=false;
@@ -164,6 +180,9 @@ export default {
     end(e){
       console.log('touchend');
       this.isdrag = false;
+      this.flag3 = true;
+      
+      
       
       if(this.flag){
         this.status2=false;
@@ -259,6 +278,11 @@ export default {
                   _this.articleList.unshift(val); 
                 }
               });*/
+            }else{
+              //让scroll_bar回到初始位置
+              this.status1=true;
+              this.status3=false;
+              this.$refs.content0.style.transform = "translate(0px, -4px)";
             }
             //本地缓存一下
             sessionStorage.setItem("data",JSON.stringify(this.articleList));  
@@ -297,7 +321,7 @@ export default {
   watch:{
     //监听路由的type类型改变
     '$route'(to,from){
-      
+        
         this.loaded = false;
         this.noData = false;
         //console.log(this.loaded);
@@ -331,6 +355,7 @@ export default {
   },
   data () {
     return {
+      flag3:true,
       tips:false,
       newsNums:0,
       flag2:true,
@@ -349,6 +374,7 @@ export default {
       moveY : 0,
       toTop : 0,
       disEndY : 0,
+      disX : 0,
       disY : 0,
       //频道列表
       navbar:[
@@ -398,5 +424,8 @@ export default {
     transform: translateY(0);
     -webkit-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
+  }
+  .feed-list-container{
+    min-height: 1000px;
   }
 </style>
