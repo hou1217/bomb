@@ -1,7 +1,8 @@
 <template>
   <div class="indexContainer withHeader">
     <!--头部-->
-    <headers :isRotate="isRotate"></headers>
+    <headers></headers>
+    <div class="tips" style="" v-show="tips"><span class="">为您推荐了{{newsNums}}篇文章</span></div>
     <div>
 	    <div class="top_menu_bar">
 		    <div class="top_menu_more">
@@ -14,16 +15,16 @@
 		      </router-link>
 		    </div>
 		  </div>
-		  <div id="div1" ref="div1" class="content0" >
+		  <div id="content0" ref="content0" class="content0" >
         <div class="scroll_bar">
           <div class="bar1" v-if="status1">⇣</div>
           <div class="bar1" v-if="status2">⇡</div>
           <div class="bar1" v-if="status3"><img src="../assets/images/onload.gif" alt="加载中" width="38"></div>
           <div class="bar2" v-if="status1">下拉刷新</div>
           <div class="bar2" v-if="status2">释放刷新</div>
-          <div class="bar2" v-if="status3">正在刷新</div>
+          <div class="bar2" v-if="status3">正在加载</div>
         </div>
-        <div id="div2" ref="div2">
+        <div id="content1" ref="content1">
           <content id="pageletListContent" class="feed-list-container">
             <transition enter-active-class="bounceInLeft" leave-active-class="bounceOutRight">
               <div class="list-content animated">
@@ -38,9 +39,9 @@
                       </h3>
                       <div class="item_info">
                         <div>
-                          <span class="hot_label space">热</span>
+                          <span class="hot_label space" v-if="item.feature">{{item.feature}}</span>
                           <span class="src space">{{item.originAuthor}}</span>
-                          <span class="cmt space">点击 {{item.reads}}</span>
+<!--                          <span class="cmt space">点击 {{item.reads}}</span>-->
                           <span class="time">{{item.time | formatDate}}</span>
                         </div>
                       </div>
@@ -57,7 +58,7 @@
                 <a href="#">加载中...</a>
               </section>
               <section class="loadmoretip" v-show="noData">
-                <a href="#">暂无数据...</a>
+                <a href="#">暂无数据</a>
               </section>
             </div>
           </content>
@@ -77,7 +78,7 @@ import Headers from '../components/Headers.vue'
 import axios from 'axios'
 //自己封装的函数方法
 import {getScrollTop,getScrollHeight,getWindowHeight,ajaxJSON} from '../assets/js/MobileFun.js'
-import {formatDate} from '../assets/js/Date.js'
+import {formatDate,relativeTime} from '../assets/js/Date.js'
 
 export default {
   name: 'Home',
@@ -88,7 +89,8 @@ export default {
   filters:{
     formatDate(time){
       var date = new Date(time);
-      return formatDate(date,'yyyy-MM-dd hh:mm');
+//    return formatDate(date,'yyyy-MM-dd hh:mm');
+      return relativeTime(time);
     }
   },
   
@@ -115,35 +117,39 @@ export default {
       }  
     },
     touchStart(){
-      this.$refs.div2.addEventListener('touchstart', this.start)
+      this.$refs.content1.addEventListener('touchstart', this.start)
     },
     start(e){
       console.log('touchstart');
       this.isdrag = true;
       this.disY = e.touches[0].pageY;
-      
       return false;
     },
     touchMove(){
-      this.$refs.div2.addEventListener('touchmove', this.move)
+      this.$refs.content1.addEventListener('touchmove', this.move)
     },
     move(e){
+      /*
+       * flag是触发ajax的核心开关，flag默认为false，当flag为true时可触发ajax
+       * 需要同时满足滚动条位置在顶部和手指触屏才行，否则flag为false
+       * y是手指在屏幕上竖直滑动的距离
+       * */
       if(this.isdrag && getScrollTop() == 0) {
-        let x = e.touches[0].pageY - this.disY;
-        //向下滑动
-        if( x > 0 && x < 100) {
+        let y = e.touches[0].pageY - this.disY;
+        //y>0,向下滑动;y<0,向上滑动
+        if( y > 0 && y < 100) {
           this.status1=true;
           this.status2=false;
           
-          this.$refs.div1.style.transform = "translate(0px, "+ x +"px)";
+          this.$refs.content0.style.transform = "translate(0px, "+ y +"px)";
           
           this.flag = false;
           return false;
-        }else if(x > 100 && x < 156){
+        }else if(y > 100 && y < 156){
           this.status1=false;
           this.status2=true;
-          this.$refs.div1.style.transform = "translate(0px, "+ x +"px)";
-          //console.log(x);
+          this.$refs.content0.style.transform = "translate(0px, "+ y +"px)";
+          //console.log(y);
           this.flag = true;
           return false;
         } 
@@ -153,7 +159,7 @@ export default {
       }
     },
     touchEnd(){
-      this.$refs.div2.addEventListener('touchend', this.end)
+      this.$refs.content1.addEventListener('touchend', this.end)
     },
     end(e){
       console.log('touchend');
@@ -162,22 +168,15 @@ export default {
       if(this.flag){
         this.status2=false;
         this.status3=true;
-        this.isRotate = true;
         this.loadMoreDatas({
           kind:this.$route.query.type,
         },true);
         this.flag = false;
-        let _this = this;
-        setTimeout(function(){
-          _this.status1=true;
-          _this.status3=false;
-          _this.$refs.div1.style.transform = "translate(0px, -4px)";
-          _this.isRotate = false;
-        },500);
+        
       }else{
         this.status1=true;
         this.status2=false;
-        this.$refs.div1.style.transform = "translate(0px, -4px)";
+        this.$refs.content0.style.transform = "translate(0px, -4px)";
       }    
     },
     getDatas(pay){
@@ -229,7 +228,8 @@ export default {
       };
       axios(options)
           .then(function(res){
-            console.log('当前页是：'+payload.kind);
+            //console.log('当前页是：'+payload.kind);
+            console.log('新的数据：');
             console.log(res.data.data); 
             // 将新获取的数据加入到vue中的data，就会反应到视图中了
             let _this = this;
@@ -239,6 +239,16 @@ export default {
                 this.articleList=this.articleList.concat(res.data.data);
               }else{
                 this.articleList=res.data.data.concat(this.articleList);
+                //让scroll_bar回到初始位置
+                this.status1=true;
+                this.status3=false;
+                this.$refs.content0.style.transform = "translate(0px, -4px)";
+                //显示推荐了多少篇文章，2s后关闭tips
+                this.tips=true;
+                this.newsNums = res.data.data.length;
+                setTimeout(function(){
+                  _this.tips=false;
+                },2000);
               }
               /*res.data.data.forEach(function(val,index){  
                 //console.log(val);
@@ -250,7 +260,7 @@ export default {
                 }
               });*/
             }
-            
+            //本地缓存一下
             sessionStorage.setItem("data",JSON.stringify(this.articleList));  
             
             // 数据更新完毕，将开关打开  
@@ -285,7 +295,6 @@ export default {
     
   },
   watch:{
-    
     //监听路由的type类型改变
     '$route'(to,from){
       
@@ -322,9 +331,10 @@ export default {
   },
   data () {
     return {
+      tips:false,
+      newsNums:0,
       flag2:true,
       isDesc:false,
-    	isRotate:false,
       loaded: false,
       noData:false, 
       articleList:[],
@@ -340,7 +350,7 @@ export default {
       toTop : 0,
       disEndY : 0,
       disY : 0,
-      //频道
+      //频道列表
       navbar:[
         {
           text:'推荐',
@@ -367,5 +377,26 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  
+  .tips{
+    display: block;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    min-height: 60px;
+    line-height: 40px;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    word-break: break-all;
+    color: #2a90d7;
+    font-size: 28px;
+    background-color: rgba(213, 233, 247, 0.9);
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+  }
 </style>
