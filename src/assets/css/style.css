@@ -168,7 +168,7 @@ a {
   transition-property: transform;
   transition-timing-function: ease-out;
   transition-duration: 300ms;
-  transform: translate(0px, -4px);
+  transform: translate(0px, 0px);
 }
 .content0 .scroll_bar {
   position: absolute;
@@ -266,6 +266,8 @@ content.feed-list-container .item_info .hot_label, content.feed-list-container .
   border-color: #00D8B7;
 }
 content.feed-list-container .item_info .space {
+  padding-left: 4px;
+  padding-right: 4px;
   margin-right: 10px;
 }
 content.feed-list-container .desc {

@@ -149,8 +149,9 @@ export default {
        * y是手指在屏幕上竖直滑动的距离,y>0,向下滑动;y<0,向上滑动
        * */
       if(this.isdrag && getScrollTop() == 0) {
-        let x = e.touches[0].pageX - this.disX;
+        //let x = e.touches[0].pageX - this.disX;
         let y = e.touches[0].pageY - this.disY;
+        this.$refs.content0.style.transition = "transform ease-out 100ms";
         /*if(x > 150 && document.querySelector(".router-link-active").nextElementSibling && this.flag3){
           console.log('右滑切换频道');
           document.querySelector(".router-link-active").nextElementSibling.click();
@@ -164,22 +165,19 @@ export default {
           
           return false;
         }*/
-        if( y > 0 && y < 100) {
+        if( y > 0 && y < 120) {
           this.status1=true;
           this.status2=false;
-          
           this.$refs.content0.style.transform = "translate(0px, "+ y +"px)";
-          
           this.flag = false;
           return false;
-        }else if(y > 100 && y < 156){
+        }else if(y >= 120 && y <= 160){
           this.status1=false;
           this.status2=true;
           this.$refs.content0.style.transform = "translate(0px, "+ y +"px)";
-          //console.log(y);
           this.flag = true;
           return false;
-        } 
+        }
         
       }else{
         this.flag = false;
@@ -192,10 +190,12 @@ export default {
       console.log('touchend');
       this.isdrag = false;
       this.flag3 = true;
-      
-      
+      this.$refs.content0.style.transition = "transform ease-out 300ms";
+
       
       if(this.flag){
+        this.$refs.content0.style.transform = "translate(0px,100px)";
+        
         this.status2=false;
         this.status3=true;
         this.loadMoreDatas({
@@ -206,11 +206,11 @@ export default {
       }else{
         this.status1=true;
         this.status2=false;
-        this.$refs.content0.style.transform = "translate(0px, -4px)";
+        this.$refs.content0.style.transform = "translate(0px, 0px)";
       }    
     },
     getDatas(pay){
-
+      document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
       if(this.flag2){
         this.flag2 = false;
         console.log(new Date());
@@ -273,7 +273,7 @@ export default {
                 //让scroll_bar回到初始位置
                 this.status1=true;
                 this.status3=false;
-                this.$refs.content0.style.transform = "translate(0px, -4px)";
+                this.$refs.content0.style.transform = "translate(0px, 0px)";
                 //显示推荐了多少篇文章，2s后关闭tips
                 this.tips=true;
                 this.newsNums = res.data.data.length;
@@ -295,7 +295,7 @@ export default {
               //让scroll_bar回到初始位置
               this.status1=true;
               this.status3=false;
-              this.$refs.content0.style.transform = "translate(0px, -4px)";
+              this.$refs.content0.style.transform = "translate(0px, 0px)";
             }
             //本地缓存一下
             sessionStorage.setItem("data",JSON.stringify(this.articleList));  
@@ -334,7 +334,8 @@ export default {
   watch:{
     //监听路由的type类型改变
     '$route'(to,from){
-        
+      
+        this.newsNums = 0;
         this.loaded = false;
         this.noData = false;
         //console.log(this.loaded);
@@ -391,6 +392,11 @@ export default {
       disY : 0,
       //频道列表
       navbar:[
+        {
+          text:'最新',
+          url:'/home/newest',
+          type:'news_newest',
+        },
         {
           text:'推荐',
           url:'/home/all',
