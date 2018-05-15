@@ -49,7 +49,12 @@
                     <div class="list_img_holder" v-if="item.coverNum==1">
                       <img :src="item.coverUrl">
                     </div>
+
                   </router-link>
+                  <div class="last-read" v-if="index==(newsNums-1)?true:false" @click="refreshDatas()">
+                    <div class="text">刚刚阅读到这里，点击刷新</div>
+                  </div>
+                  
                 </section>  
               </div>
             </transition>
@@ -96,6 +101,12 @@ export default {
   
   
   methods:{
+    refreshDatas(){
+      document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
+      this.loadMoreDatas({
+        kind:this.$route.query.type,
+      },true);
+    },
   	tabScroll(){
   	  if(document.body){
         document.addEventListener("scroll",this.handleScroll);
@@ -140,7 +151,7 @@ export default {
       if(this.isdrag && getScrollTop() == 0) {
         let x = e.touches[0].pageX - this.disX;
         let y = e.touches[0].pageY - this.disY;
-        if(x > 150 && document.querySelector(".router-link-active").nextElementSibling && this.flag3){
+        /*if(x > 150 && document.querySelector(".router-link-active").nextElementSibling && this.flag3){
           console.log('右滑切换频道');
           document.querySelector(".router-link-active").nextElementSibling.click();
           this.flag3 = false;
@@ -152,7 +163,7 @@ export default {
           this.flag3 = false;
           
           return false;
-        }
+        }*/
         if( y > 0 && y < 100) {
           this.status1=true;
           this.status2=false;
@@ -258,6 +269,7 @@ export default {
                 this.articleList=this.articleList.concat(res.data.data);
               }else{
                 this.articleList=res.data.data.concat(this.articleList);
+               
                 //让scroll_bar回到初始位置
                 this.status1=true;
                 this.status3=false;
@@ -268,6 +280,7 @@ export default {
                 setTimeout(function(){
                   _this.tips=false;
                 },2000);
+               
               }
               /*res.data.data.forEach(function(val,index){  
                 //console.log(val);
@@ -406,7 +419,7 @@ export default {
   .tips{
     display: block;
     position: fixed;
-    top: 0px;
+    top: 162px;
     left: 0;
     z-index: 1000;
     width: 100%;
@@ -428,4 +441,15 @@ export default {
   .feed-list-container{
     min-height: 1000px;
   }
+  .last-read {
+    display: block;
+    height: 80px;
+    line-height: 80px;
+    color: rgb(68, 138, 255);
+    font-size: 28px;
+    background-color: rgb(240, 246, 255);
+    text-align: center;
+    text-decoration: none;
+  }
+
 </style>
