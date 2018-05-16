@@ -1,7 +1,7 @@
 <template>
   <div class="indexContainer withHeader">
     <!--头部-->
-    <headers></headers>
+    <headers @refreshNews="refreshDatas" :isRotate="isRotate"></headers>
     <div class="tips" style="" v-show="tips"><span class="">为您推荐了{{newsNums}}篇文章</span></div>
     <div>
 	    <div class="top_menu_bar">
@@ -62,6 +62,9 @@
               <section class="loadmoretip" v-show="!loaded">
                 <a href="#">加载中...</a>
               </section>
+              <section class="loadmoretip" v-show="noMore">
+                <a href="#">没有更多了</a>
+              </section>
               <section class="loadmoretip" v-show="noData">
                 <a href="#">暂无数据</a>
               </section>
@@ -114,13 +117,12 @@ export default {
     },
     handleScroll(){
       // 判断是否滚动到底部  
-      if(getScrollTop() + getWindowHeight() >= (getScrollHeight() - 180) && !this.noData) {    
+      if(getScrollTop() + getWindowHeight() >= (getScrollHeight() - 180) && !this.noData ) {    
         // 如果开关打开则加载数据  
         if(this.sw==true){  
           // 将开关关闭  
           this.sw = false; 
-          this.loaded = false;
-          
+         
           // 加载更多的数据
           this.loadMoreDatas({
             kind:this.$route.query.type,
@@ -231,8 +233,9 @@ export default {
             console.log(res.data);
             if(!res.data.data){
               this.noData = true;
+              this.loaded = true;
             }
-            this.loaded = true;
+           
             this.articleList = res.data.data;
             //本地session存储
             sessionStorage.setItem("data",JSON.stringify(this.articleList));  
@@ -245,6 +248,10 @@ export default {
      
     },
     loadMoreDatas(payload,mode){
+      this.isRotate = true;
+      this.loaded = false;
+      this.noMore = false;
+      this.noData = false;
       console.log(new Date());
       console.log("加载更多文章。");
       const options = {
@@ -261,9 +268,16 @@ export default {
             //console.log('当前页是：'+payload.kind);
             console.log('新的数据：');
             console.log(res.data.data); 
+            
             // 将新获取的数据加入到vue中的data，就会反应到视图中了
             let _this = this;
             if(res.data.data){
+              if(res.data.data.length == 0){
+                setTimeout(function(){
+                  _this.loaded = true;
+                  _this.noMore = true;
+                },700);
+              }
               //分2种情况进行处理：1.新数据填到原数组后面；2.新数据填到原数组前面
               if(!mode){
                 this.articleList=this.articleList.concat(res.data.data);
@@ -292,16 +306,20 @@ export default {
                 }
               });*/
             }else{
+              this.loaded = true;
+              this.noData = true;
               //让scroll_bar回到初始位置
-              this.status1=true;
-              this.status3=false;
+              this.status1 = true;
+              this.status3 = false;
               this.$refs.content0.style.transform = "translate(0px, 0px)";
             }
             //本地缓存一下
             sessionStorage.setItem("data",JSON.stringify(this.articleList));  
-            
             // 数据更新完毕，将开关打开  
-            this.sw = true;  
+            this.sw = true; 
+            setTimeout(function(){
+              _this.isRotate = false;
+            },700);
           }.bind(this))  
           .catch(function(error){  
             console.log(error);  
@@ -334,8 +352,9 @@ export default {
   watch:{
     //监听路由的type类型改变
     '$route'(to,from){
-      
+        this.sw = true;
         this.newsNums = 0;
+        this.noMore = false;
         this.loaded = false;
         this.noData = false;
         //console.log(this.loaded);
@@ -369,11 +388,13 @@ export default {
   },
   data () {
     return {
+      isRotate:false,
       flag3:true,
       tips:false,
       newsNums:0,
       flag2:true,
       isDesc:false,
+      noMore : false,
       loaded: false,
       noData:false, 
       articleList:[],

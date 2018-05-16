@@ -65,6 +65,7 @@ const ajaxJSON = function(method,url) {
   });
   return promise;
 }
+
 export {
   getScrollTop,
   getScrollHeight,

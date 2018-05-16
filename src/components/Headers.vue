@@ -4,7 +4,7 @@
       <div class="abs_m">
         <a href="#" class="refresh_title btn">卧岚头条</a>
         <div class="refreshBtn-container ">
-          <i class="refresh_btn" :class="{rotate:isRotate}"></i>
+          <i class="refresh_btn" :class="{rotate:isRotate}" @click="refreshNews()" ></i>
         </div>
       </div>
       <div class="abs_l">
@@ -17,13 +17,21 @@
   </header>
 </template>
 <script>
+
   export default {
     name: 'Headers',
-    props:['isRotate']  ,
+    props:['isRotate'],
     methods:{
+      refreshNews(){
+
+        
+        this.$emit('refreshNews','param'); 
+        //第一个参数名为调用的方法名，第二个参数为需要传递的参数
+      },
       goBack(){
         this.$router.go(-1);
-      }
+      },
+      
     }
   }
 

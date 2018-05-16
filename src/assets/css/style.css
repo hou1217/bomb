@@ -79,8 +79,19 @@ a {
   background: url(../images/new_refresh.png) no-repeat center center;
 }
 .index-toutiao .top_bar .abs_m .refreshBtn-container .refresh_btn.rotate {
-  -webkit-transform-style: preserve-3d;
-  -webkit-animation: x-spin 0.7s linear;
+  transform-style: preserve-3d;
+  animation: x-spin 0.7s linear;
+}
+@keyframes x-spin {
+  0% {
+    -webkit-transform: rotateZ(0deg);
+  }
+  50% {
+    -webkit-transform: rotateZ(180deg);
+  }
+  100% {
+    -webkit-transform: rotateZ(360deg);
+  }
 }
 .index-toutiao .top_bar .refresh_title {
   width: 136px;
@@ -336,14 +347,3 @@ content.feed-list-container .list_bottom a {
   text-decoration: none;
 }
 
-@-webkit-keyframes x-spin {
-  0% {
-    -webkit-transform: rotateZ(0deg);
-  }
-  50% {
-    -webkit-transform: rotateZ(180deg);
-  }
-  100% {
-    -webkit-transform: rotateZ(360deg);
-  }
-}
