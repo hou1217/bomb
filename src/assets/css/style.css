@@ -300,6 +300,12 @@ content.feed-list-container .list_img_holder img {
   -webkit-user-select: none;
   text-decoration: none;
 }
+content.feed-list-container .list_img_holder {
+  height: 148px;
+  position: relative;
+  background: url(../images/wallan.png) #efefef no-repeat center center;
+  background-size: 50%;
+}
 content.feed-list-container .middle_mode .list_img_holder {
   overflow: hidden;
   width: 33%;
@@ -330,10 +336,10 @@ content.feed-list-container .list_image ul li {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-content.feed-list-container .list_image ul li :first-child {
+content.feed-list-container .list_image ul li:first-child {
   padding-right: 4px;
 }
-content.feed-list-container .list_image ul li :last-child {
+content.feed-list-container .list_image ul li:last-child {
   padding-left: 4px;
 }
 content.feed-list-container .list_bottom {
