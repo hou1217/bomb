@@ -231,7 +231,8 @@ export default {
           .then(function (res){
             console.log('当前页是：'+pay.kind);
             console.log(res.data);
-            if(!res.data.data){
+            //当没有数据或者数据为0的时候，显示'暂无数据'，'加载中'不显示
+            if(!res.data.data || res.data.data.length == 0){
               this.noData = true;
               this.loaded = true;
             }
@@ -280,6 +281,7 @@ export default {
               }
               //分2种情况进行处理：1.新数据填到原数组后面；2.新数据填到原数组前面
               if(!mode){
+                console.log("在原数组后面添加新数据");
                 this.articleList=this.articleList.concat(res.data.data);
               }else{
                 this.articleList=res.data.data.concat(this.articleList);
@@ -288,12 +290,16 @@ export default {
                 this.status1=true;
                 this.status3=false;
                 this.$refs.content0.style.transform = "translate(0px, 0px)";
-                //显示推荐了多少篇文章，2s后关闭tips
-                this.tips=true;
+                 
+                //tips显示推荐了多少篇文章，2s后关闭tips；当newsNums不为0时才显示tips
                 this.newsNums = res.data.data.length;
-                setTimeout(function(){
-                  _this.tips=false;
-                },2000);
+                if(this.newsNums != 0){
+                  this.tips=true;
+                  setTimeout(function(){
+                    _this.tips=false;
+                  },2000);
+                }
+                
                
               }
               /*res.data.data.forEach(function(val,index){  
@@ -307,7 +313,7 @@ export default {
               });*/
             }else{
               this.loaded = true;
-              this.noData = true;
+              this.noMore = true;
               //让scroll_bar回到初始位置
               this.status1 = true;
               this.status3 = false;

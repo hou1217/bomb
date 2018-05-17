@@ -1,23 +1,24 @@
 <template>
   <div class="container">
     <headers></headers>
-    <div class="detail">
+    <div class="detail" v-show="isShow">
       <input type="hidden" id="article_id" :value="id">
       <input type="hidden" id="token" :value="token">
       <input type="hidden" id="device_num" :value="device">
+     
       <ul>
-        <li class="li-channel" id="article_channel" @click="">
+        <li class="li-channel" id="article_channel">
           <a href="#">新闻</a>
         </li>
         <li class="li-title" id="article_title">
           {{title}}
         </li>
         <li class="li-media">
-          <div class="article-meta-img div-media" @click="">
+          <div class="article-meta-img div-media">
             <img id="portraitUrl" :src="portraitUrl" class="img-media">
           </div>
           <div class="article-meta-info div-media">
-            <div class="article-meta-name" id="article_mediaName" @click="">
+            <div class="article-meta-name" id="article_mediaName">
               {{mediaNames}}
             </div>
             <div class="article-meta-date" id="article_time">
@@ -115,6 +116,7 @@
     },
 	  data(){
 	    return {
+	      isShow:false,
 	      id:this.$route.query.id,
 	      token:this.$route.params.token,
 	      device:this.$route.params.device_num,
@@ -149,24 +151,30 @@
         };
         axios(options)
           .then(function (res){
+            
             //console.log(res);
             console.log("文章的id:"+pay.kind);
-            this.loading = false;
-//          this.dataList = res.data.datas;
-            this.time = res.data.data.createdAt;
-            this.title = res.data.data.title;
-            this.mediaNames = res.data.data.media.name;
-            this.portraitUrl = res.data.data.media.portraitUrl;
-            this.mediaNames = res.data.data.media.name;
-            this.mediaId = res.data.data.media.id;
-            this.keywords = res.data.data.keywords;
-            this.content = res.data.data.items;
-            this.origin = res.data.data.origin;
-            this.originUrl = res.data.data.originUrl;
-            this.originAuthor = res.data.data.originAuthor;
-            this.linkes = res.data.data.likes;
-            this.mediaFans = res.data.data.media.fans;
-            this.mediaFollows = res.data.data.media.follows;
+            if(res.data.data){
+              this.isShow = true;
+              //this.dataList = res.data.datas;
+              this.time = res.data.data.createdAt;
+              this.title = res.data.data.title;
+              this.mediaNames = res.data.data.media.name;
+              this.portraitUrl = res.data.data.media.portraitUrl;
+              this.mediaNames = res.data.data.media.name;
+              this.mediaId = res.data.data.media.id;
+              this.keywords = res.data.data.keywords;
+              this.content = res.data.data.items;
+              this.origin = res.data.data.origin;
+              this.originUrl = res.data.data.originUrl;
+              this.originAuthor = res.data.data.originAuthor;
+              this.linkes = res.data.data.likes;
+              this.mediaFans = res.data.data.media.fans;
+              this.mediaFollows = res.data.data.media.follows;
+            }else{
+              this.isShow = false;
+            }
+
           }.bind(this))
           .catch(function (error) {
             console.log(error);
@@ -174,10 +182,10 @@
       },
 	  },
 	  mounted(){
+	    document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
       this.getDetail({
         kind:this.$route.query.id,
       });
-      document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
 	  },
 	  destroyed(){
       console.log("detailPage destroyed");
