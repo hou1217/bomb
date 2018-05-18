@@ -28,22 +28,6 @@
           <content id="pageletListContent" class="feed-list-container">
             <transition enter-active-class="bounceInLeft" leave-active-class="bounceOutRight">
               <div class="list-content animated">
-                <section class="has_action">
-                  <a href="">
-                    <video style="background-color:#000;width:100%; height:452px" playsinline="isiPhoneShowPlaysinline"
-                      webkit-playsinline="isiPhoneShowPlaysinline" x-webkit-airplay="" preload="none" 
-                      src="https://apd-36d56f07aac3be309fc7a7b6ca4c3189.v.smtcdns.com/om.tc.qq.com/AVJCQMI6MAz2an0GCxMrtJv-pU1B8nXpd9UjbATrMgGc/b0648nob46o.mp4?sdtfrom=v3010&guid=f0fcc686d0a78299eff34e05c1f3334c&vkey=DD2F9655F9ED0F675C6A57A52136B3FEFE452B0A9C414383417A176937DF43E70A9BB2AFE0F5532547DC33419A48E7A98472DAECD1798269AC9CF69623669EE9130359ED4977E4AB9903FF6A608E48D51A04BD434E12F2AD37590BFD54C2A401EEE790BEB11540A3371F7A629DEDFDF38E4F18F0E630B1AF&platform=2" 
-                      controls="true"  poster="https://wander.wallan-tech.com:1443/media-app/media/download/origin/NEWS-5a6a83ba963a654b5dfbec3d">
-                    </video>
-                  </a>
-                  <a href="">
-                    <video style="background-color:#000;width:100%; height:452px" playsinline="isiPhoneShowPlaysinline" 
-                      webkit-playsinline="isiPhoneShowPlaysinline" x-webkit-airplay="" preload="none" 
-                      src="https://apd-01e0aeca8d154343c132e34cf89c8686.v.smtcdns.com/om.tc.qq.com/AbpY4UxJCSy2Y_vLAKrTm56lLDbe070ery9PFllt-Y4g/v0656dctt9t.mp4?sdtfrom=v3010&guid=f0fcc686d0a78299eff34e05c1f3334c&vkey=330E99266242D830E9B41B57D97C8F7840A1AA661BF1FDAFD0261A0B8F4C0E1C541C5611D6350387AC1AB3B1613E122A9D653BD37440F99F4A66F2301C583B795589F42CB191C173026B151A38ADD0275964706607140CB62A4F0A35C4313046A00CB073066ECFB9055D0FE8E34D76EA6AEA4010CA50933B&platform=2"
-                      controls="true"  poster="https://wander.wallan-tech.com:1443/media-app/media/download/origin/NEWS-5a6a83ba963a654b5dfbec3d">
-                    </video>
-                  </a>
-                </section>
                 <section class="has_action" :class="(item.type=='IMAGE_TEXT')?'middle_mode':''" data-hot-time="" data-group-id="" data-item-id="" data-format="0" v-for="(item,index) in articleList" :key="index">
                   <router-link :to="{
                     name:'newsDetail',
@@ -61,7 +45,9 @@
                         </ul>
                       </div>
                       <div class="list_img_holder_large" v-if="item.type=='VIDEO'">
-                          <img src="https://wander.wallan-tech.com:1443/media-app/media/download/origin/NEWS-5a6a83ba963a654b5dfbec3d">
+                          <video playsinline webkit-playsinline  preload="none" controls="true"
+                           :poster="item.coverUrl" :src="item.url">
+                          </video>
                       </div>
                       <div class="item_info">
                         <div>
@@ -241,7 +227,7 @@ export default {
       document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
       if(this.flag2){
         this.flag2 = false;
-        console.log(new Date());
+        console.log(new Date().getHours()+':'+new Date().getMinutes()+':'+new Date().getSeconds());
         console.log("加载文章列表。");
         //调用axios plugin
         const options = {
@@ -255,7 +241,8 @@ export default {
         };
         axios(options)
           .then(function (res){
-            console.log('当前页是：'+pay.kind);
+            //console.log('当前页是：'+pay.kind);
+            console.log('加载的数据：');
             console.log(res.data);
             //console.log(res.data.data[0].coverUrl.split(','))
             //当没有数据或者数据为0的时候，显示'暂无数据'，'加载中'不显示
@@ -511,5 +498,9 @@ export default {
     text-align: center;
     text-decoration: none;
   }
-
+  .list_img_holder_large video{
+    background-color:#000;
+    width:100%;
+    height:100%;
+  }
 </style>

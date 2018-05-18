@@ -319,7 +319,7 @@ content.feed-list-container .list_img_holder_large {
   overflow: hidden;
   width: 100%;
   position: relative;
-  min-height: 3.75rem;
+  height: 452px;
 }
 content.feed-list-container .list_image ul {
   display: block;
