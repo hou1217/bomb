@@ -1,11 +1,21 @@
 <template>
   <div class="container">
     <headers></headers>
+    
     <div class="detail" v-show="isShow">
       <input type="hidden" id="article_id" :value="id">
       <input type="hidden" id="token" :value="token">
       <input type="hidden" id="device_num" :value="device">
-     
+      <div v-if="video">
+            <div class="video-placeholder">
+              <div class="video-js">
+                <video class="vjs-tech" webkit-playsinline  preload="none" controls="true"
+                :poster="coverUrl" :src="url"></video>
+              </div>
+              
+            </div>
+            
+      </div>
       <ul>
         <li class="li-channel" id="article_channel">
           <a href="#">新闻</a>
@@ -27,7 +37,7 @@
           </div>
           <div class="article-meta-follow div-media" id="follow1">
             <input type="hidden" id="follow">
-            <span class="media-un-follow" id="follow-action" @click="">+关注</span>
+            <span class="media-un-follow" id="follow-action">+关注</span>
           </div>
         </li>
         <li class="li-content" id="article_content" >
@@ -116,6 +126,9 @@
     },
 	  data(){
 	    return {
+	      coverUrl:"",
+	      url:"",
+	      video:false,
 	      isShow:false,
 	      id:this.$route.query.id,
 	      token:this.$route.params.token,
@@ -151,11 +164,17 @@
         };
         axios(options)
           .then(function (res){
-            
+            console.log(res.data);
             //console.log(res);
             console.log("文章的id:"+pay.kind);
             if(res.data.data){
               this.isShow = true;
+              if(res.data.data.url){
+                this.video = true;
+              }
+             
+              this.coverUrl = res.data.data.coverUrl;
+              this.url = res.data.data.url;
               //this.dataList = res.data.datas;
               this.time = res.data.data.createdAt;
               this.title = res.data.data.title;
@@ -200,8 +219,11 @@
 }
 .detail{
   margin: auto;
-  padding: 0 30px;
+  
   border-top: solid 1px #eeeeee;
+}
+.detail ul{
+  padding: 0 30px;
 }
 .detail ul li{
   list-style-type: none;
@@ -442,5 +464,21 @@ img+p {
   margin-top: 20px;
   font-size: 24px;
   color: #999999;
+}
+.video-placeholder{
+  width: 100%;
+  height: 452px;
+  position: relative;
+}
+.video-js{
+  position: absolute;
+  top:88px;
+  background-color: #000;
+  width: 100%;
+  height: 100%;
+}
+.video-js .vjs-tech {
+    width: 100%;
+    height: 100%;
 }
 </style>
