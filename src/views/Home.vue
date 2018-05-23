@@ -28,11 +28,14 @@
           <content id="pageletListContent" class="feed-list-container">
             <transition enter-active-class="bounceInLeft" leave-active-class="bounceOutRight">
               <div class="list-content animated">
-                <section class="has_action" :class="(item.type=='IMAGE_TEXT')?'middle_mode':''" data-hot-time="" data-group-id="" data-item-id="" data-format="0" v-for="(item,index) in articleList" :key="index">
+                <section class="has_action">
+                  <iframe src="http://www.doudou.in/game/play-96930.html" frameborder="0"  width="100%" height="1126" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                </section>
+                <section class="has_action" :class="(item.type=='IMAGE_TEXT')?'middle_mode':''" v-for="(item,index) in articleList" :key="index">
                   <router-link :to="{
                     name:'newsDetail',
                     query:{id:item.articleId}
-                    }" class="article_link clearfix " data-action-label="" data-tag="">
+                    }" class="article_link clearfix ">
                     <div class="item_detail" :class="(item.type=='IMAGE_TEXT')? 'desc':''">
                       <h3 class="dotdot line2" :class="(item.type=='IMAGE_TEXT')?'image-margin-right':''">
                         {{item.title}}
