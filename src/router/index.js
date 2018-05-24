@@ -6,6 +6,7 @@ import Home from '@/views/Home'
 import Detail from '@/views/Detail'
 
 import Fail from '@/views/Fail'
+import Login from '@/views/Login'
 import md5 from 'js-md5'
 
 
@@ -35,6 +36,14 @@ const router = new Router({
       component: Fail,
     },
     {
+      path:'/login',
+      name:'Login',
+      component:Login,
+      meta: {
+        keepAlive: false
+      }
+    },
+    {
       path: '*',
       meta: { requiresAuth: true }
     },
@@ -58,7 +67,8 @@ router.beforeEach((to, from, next) => {
     
     if(md5(token+deviceNum) != signature){
       console.log("验证成功");
-      next('/home/all?type=__all__')
+      //next('/home/all?type=__all__')
+      next('/login')
     }else{
       console.log("验证失败");
       next('/fail')

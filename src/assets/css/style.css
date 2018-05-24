@@ -152,7 +152,7 @@ a {
 }
 .top_menu_bar .top_menu_list {
   overflow: hidden;
-  overflow-x: scroll;
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   white-space: nowrap;
 }

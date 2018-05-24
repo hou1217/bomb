@@ -19,6 +19,9 @@ npm run build --report
 
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+2018.5.24更新：
+1.新增login页面，用户输入用户名后才能进入到主页；
+2.数据请求时候，把用户名带给后台。
 
 2018.5.17更新：
 1.给导航栏中的刷新按钮新增刷新数据的功能；

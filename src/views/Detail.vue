@@ -158,7 +158,8 @@
           headers: {
             'content-type': 'application/json;',
             'WALLAN-TOKEN': '5d4139e70b35803e75414ddef0f57cd9',
-            'WALLAN-DEVICENUM':'12000000000'
+            'WALLAN-DEVICENUM':'12000000000',
+            'USERNAME':sessionStorage.getItem("username")
           },
           url:this.GLOBAL.serverUrl+'/media-dc/article/detail'+'?id='+pay.kind
         };

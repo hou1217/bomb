@@ -28,9 +28,9 @@
           <content id="pageletListContent" class="feed-list-container">
             <transition enter-active-class="bounceInLeft" leave-active-class="bounceOutRight">
               <div class="list-content animated">
-                <section class="has_action">
+                <!--<section class="has_action">
                   <iframe src="http://www.doudou.in/game/play-96930.html" frameborder="0"  width="100%" height="1126" scrolling="no" marginheight="0" marginwidth="0"></iframe>
-                </section>
+                </section>-->
                 <section class="has_action" :class="(item.type=='IMAGE_TEXT')?'middle_mode':''" v-for="(item,index) in articleList" :key="index">
                   <router-link :to="{
                     name:'newsDetail',
@@ -238,7 +238,8 @@ export default {
           headers: {
             'content-type': 'application/json;',
             'WALLAN-TOKEN': '5d4139e70b35803e75414ddef0f57cd9',
-            'WALLAN-DEVICENUM':'12000000000'
+            'WALLAN-DEVICENUM':'12000000000',
+            'USERNAME':sessionStorage.getItem("username")
           },
           url:this.GLOBAL.serverUrl+'/media-dc/index'+'?tag='+pay.kind
         };
@@ -277,7 +278,8 @@ export default {
         headers: {
           'content-type': 'application/json;',
           'WALLAN-TOKEN': '5d4139e70b35803e75414ddef0f57cd9',
-          'WALLAN-DEVICENUM':'12000000000'
+          'WALLAN-DEVICENUM':'12000000000',
+          'USERNAME':sessionStorage.getItem("username")
         },
         url:mode?this.GLOBAL.serverUrl+'/media-dc/more'+'?tag='+payload.kind+'&type=new':this.GLOBAL.serverUrl+'/media-dc/more'+'/?tag='+payload.kind+'&type=history'
       };
