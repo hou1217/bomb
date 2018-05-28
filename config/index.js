@@ -43,22 +43,24 @@ module.exports = {
 
   build: {
     // Template for index.html
-    // test pre prod 三处环境的配制 
+    // fat uat prod 三处环境的配制 
+    fatEnv: {
+      NODE_ENV: '"fat"',
+      EVN_CONFIG:'"fat"',
+      API_ROOT:'"http://media.dc.wallan-tech.com"'
+    },
+    uatEnv: {
+      NODE_ENV: '"uat"',
+      EVN_CONFIG:'"uat"',
+      API_ROOT:'"http://media.dc.wallan-tech.com"'
+    },
     prodEnv: {
       NODE_ENV: '"production"',
       EVN_CONFIG:'"prod"', 
       API_ROOT:'"http://media.dc.wallan-tech.com"',
     },
-    preEnv: {
-      NODE_ENV: '"presentation"',
-      EVN_CONFIG:'"pre"',
-      API_ROOT:'"http://media.dc.wallan-tech.com"'
-    },
-    testEnv: {
-      NODE_ENV: '"testing"',
-      EVN_CONFIG:'"test"',
-      API_ROOT:'"http://media.dc.wallan-tech.com"'
-    },
+    
+    
     index: path.resolve(__dirname, '../dist/index.html'),
 
     // Paths

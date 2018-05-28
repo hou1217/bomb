@@ -1,5 +1,3 @@
-# sea
-
 > A Vue.js project
 
 ## Build Setup
@@ -8,17 +6,20 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at 127.0.0.1:8083
 npm run dev
+
+# build for fat with minification
+npm run build:fat
+
+# build for uat with minification
+npm run build:uat
 
 # build for production with minification
 npm run build:prod
 
-# build for production and view the bundle analyzer report
-npm run build --report
-
-
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
 2018.5.25更新：
 1.新增clearcache字段，如果为1则清除缓存；
 2.频道推荐和关注暂时去除，默认跳转到热点频道。

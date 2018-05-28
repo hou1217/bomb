@@ -5,12 +5,11 @@
   "author": "hys",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "build": "node build/build.js",
-    "build:dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js",
-    "build:test": "cross-env NODE_ENV=production env_config=test node build/build.js",
-    "build:pre": "cross-env NODE_ENV=production env_config=pre node build/build.js"
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "build:fat": "cross-env NODE_ENV=production env_config=fat node build/build.js",
+    "build:uat": "cross-env NODE_ENV=production env_config=uat node build/build.js",
+    "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js"
   },
   "dependencies": {
     "vue": "^2.5.2",
