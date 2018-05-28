@@ -42,7 +42,7 @@
                       </h3>
                       <div class="list_image" v-if="item.type=='IMAGE_GROUP'">
                         <ul class="clearfix">
-                          <li class="list_img_holder" v-for="value in item.coverUrl.split(',')">
+                          <li class="list_img_holder" v-for="(value,index) in item.coverUrl.split(',')" :key="index">
                             <img :src="value" alt="">
                           </li>
                         </ul>
