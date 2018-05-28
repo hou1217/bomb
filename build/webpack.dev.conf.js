@@ -12,6 +12,8 @@ const portfinder = require('portfinder')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
+// 个性env常量的定义
+const env = config.dev.env
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -33,8 +35,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     compress: true,
     host: HOST || config.dev.host,
     port: PORT || config.dev.port,
-    open: config.dev.autoOpenBrowser,
-    overlay: config.dev.errorOverlay
+    open:  config.dev.autoOpenBrowser,
+    overlay:  config.dev.errorOverlay
       ? { warnings: false, errors: true }
       : false,
     publicPath: config.dev.assetsPublicPath,
@@ -46,7 +48,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': require('../config/dev.env')
+      'process.env': env
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.

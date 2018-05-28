@@ -12,8 +12,8 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 // 个性env常量的定义
-// const env = require('../config/prod.env')
-const env = config.build[process.env.env_config+'Env'] //2018.4.23新增
+//根据传入的参数env_config不同，选择不同的环境
+const env = config.build[process.env.env_config+'Env'] 
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {

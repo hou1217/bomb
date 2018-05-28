@@ -13,13 +13,18 @@ module.exports = {
     proxyTable: {},
 
     // Various Dev Server settings
-    host: '0.0.0.0', // can be overwritten by process.env.HOST
+    host: '127.0.0.1', // can be overwritten by process.env.HOST
     port: 8083, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
-
+    //环境变量
+    env:{
+      NODE_ENV: '"development"',
+      //API_ROOT: '"//192.168.2.209:8086"',
+      API_ROOT:'"http://media.dc.wallan-tech.com"'
+    },
     
     /**
      * Source Maps
@@ -38,10 +43,22 @@ module.exports = {
 
   build: {
     // Template for index.html
-    // 添加test pre prod 三处环境的配制 --2018.4.23
-    prodEnv: require('./prod.env'),
-    preEnv: require('./pre.env'),
-    testEnv: require('./test.env'),
+    // test pre prod 三处环境的配制 
+    prodEnv: {
+      NODE_ENV: '"production"',
+      EVN_CONFIG:'"prod"', 
+      API_ROOT:'"http://media.dc.wallan-tech.com"',
+    },
+    preEnv: {
+      NODE_ENV: '"presentation"',
+      EVN_CONFIG:'"pre"',
+      API_ROOT:'"http://media.dc.wallan-tech.com"'
+    },
+    testEnv: {
+      NODE_ENV: '"testing"',
+      EVN_CONFIG:'"test"',
+      API_ROOT:'"http://media.dc.wallan-tech.com"'
+    },
     index: path.resolve(__dirname, '../dist/index.html'),
 
     // Paths
