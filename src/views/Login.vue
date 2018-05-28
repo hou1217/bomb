@@ -34,7 +34,7 @@ export default {
       //本地session存储username
       sessionStorage.setItem("username",JSON.stringify(this.username)); 
       //跳转到home页面
-      this.$router.push('/home/all?type=__all__');
+      this.$router.push('/home/newest?type=news_newest');
     }
   }
 }

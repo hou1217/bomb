@@ -287,8 +287,12 @@ export default {
           .then(function(res){
             //console.log('当前页是：'+payload.kind);
             console.log('新的数据：');
-            console.log(res.data.data); 
-            
+            console.log(res.data); 
+            if(res.data.clearCache && res.data.clearCache==1){
+              console.log("清缓存"); 
+              //清缓存
+              this.articleList=[];
+            }
             // 将新获取的数据加入到vue中的data，就会反应到视图中了
             let _this = this;
             if(res.data.data){
@@ -443,16 +447,16 @@ export default {
           url:'/home/newest',
           type:'news_newest',
         },
-        {
-          text:'推荐',
-          url:'/home/all',
-          type:'__all__',
-        },
-        {
-          text:'关注',
-          url:'/home/focus',
-          type:'news_focus'
-        },
+//      {
+//        text:'推荐',
+//        url:'/home/all',
+//        type:'__all__',
+//      },
+//      {
+//        text:'关注',
+//        url:'/home/focus',
+//        type:'news_focus'
+//      },
         {
           text:'热点',
           url:'/home/hot',
