@@ -5,7 +5,6 @@
   "author": "hys",
   "private": true,
   "scripts": {
-    "build": "node build/build.js",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "build:fat": "cross-env NODE_ENV=production env_config=fat node build/build.js",
     "build:uat": "cross-env NODE_ENV=production env_config=uat node build/build.js",
