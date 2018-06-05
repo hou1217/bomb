@@ -20,6 +20,10 @@ npm run build:prod
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
+2018.6.5更新：
+1.home页面的频道修改为从后台动态获取；
+2.login页面默认跳转到头条频道。
+
 2018.5.25更新：
 1.新增clearcache字段，如果为1则清除缓存；
 2.频道推荐和关注暂时去除，默认跳转到热点频道。
