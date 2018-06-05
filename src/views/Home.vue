@@ -10,8 +10,11 @@
 		      <a class="more_btn" href="javascript:void(0)"></a>
 		    </div>
 		    <div class="top_menu_list">
-		      <router-link :to="{path:item.url,query:{type:item.type}}" :data-channel="item.type" :data-query="'channel='+item.type" class="btn" v-for='(item,index) in navbar' :key="index">
-		        {{item.text}}
+          <router-link :to="{path:('/home/toutiao'),query:{type:'toutiao'}}" data-channel="toutiao" data-query="channel=toutiao" class="btn">
+		        头条
+		      </router-link>
+		      <router-link :to="{path:('/home/'+item.channel),query:{type:item.channel}}" :data-channel="item.channel" :data-query="'channel='+item.channel" class="btn" v-for='(item,index) in navbar' :key="index">
+		        {{item.name}}
 		      </router-link>
 		    </div>
 		  </div>
@@ -226,6 +229,36 @@ export default {
         this.$refs.content0.style.transform = "translate(0px, 0px)";
       }    
     },
+    loadNavBar(){
+      //  to ajax 请求获取navbar
+      console.log("加载导航栏。");
+      //调用axios plugin
+      const options = {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json;',
+          'WALLAN-TOKEN': '5d4139e70b35803e75414ddef0f57cd9',
+          'WALLAN-DEVICENUM':'12000000000',
+          'USERNAME':sessionStorage.getItem("username")
+        },
+        url:this.GLOBAL.serverUrl+'/media-dc/navi'
+      };
+      axios(options)
+        .then(function (res){
+          console.log('加载的频道列表：');
+          console.log(res.data);
+          //console.log(res.data.data[0].coverUrl.split(','))
+          //this.articleList = res.data.data;
+          this.navbar = res.data.data;
+          //本地session存储
+          //sessionStorage.setItem("data",JSON.stringify(this.articleList));  
+        }.bind(this))
+        .catch(function (error) {
+          console.log(error);
+        });
+      //this.flag2 = true;
+      
+    },
     getDatas(pay){
       document.body.scrollTop = document.documentElement.scrollTop = 0;//滚动条回到顶部
       if(this.flag2){
@@ -241,7 +274,7 @@ export default {
             'WALLAN-DEVICENUM':'12000000000',
             'USERNAME':sessionStorage.getItem("username")
           },
-          url:this.GLOBAL.serverUrl+'/media-dc/index'+'?tag='+pay.kind
+          url:this.GLOBAL.serverUrl+'/media-dc/index'+'?channel='+pay.kind
         };
         axios(options)
           .then(function (res){
@@ -281,7 +314,7 @@ export default {
           'WALLAN-DEVICENUM':'12000000000',
           'USERNAME':sessionStorage.getItem("username")
         },
-        url:mode?this.GLOBAL.serverUrl+'/media-dc/more'+'?tag='+payload.kind+'&type=new':this.GLOBAL.serverUrl+'/media-dc/more'+'/?tag='+payload.kind+'&type=history'
+        url:mode?this.GLOBAL.serverUrl+'/media-dc/more'+'?channel='+payload.kind+'&type=new':this.GLOBAL.serverUrl+'/media-dc/more'+'/?channel='+payload.kind+'&type=history'
       };
       axios(options)
           .then(function(res){
@@ -359,6 +392,7 @@ export default {
   
   mounted(){
     //加载完成后执行
+    this.loadNavBar();
     this.getDatas({
       kind:this.$route.query.type,
     });
@@ -441,28 +475,7 @@ export default {
       disX : 0,
       disY : 0,
       //频道列表
-      navbar:[
-        {
-          text:'最新',
-          url:'/home/newest',
-          type:'news_newest',
-        },
-//      {
-//        text:'推荐',
-//        url:'/home/all',
-//        type:'__all__',
-//      },
-//      {
-//        text:'关注',
-//        url:'/home/focus',
-//        type:'news_focus'
-//      },
-        {
-          text:'热点',
-          url:'/home/hot',
-          type:'news_hot'
-        },
-      ],
+      navbar:[],
         
     }
   },
