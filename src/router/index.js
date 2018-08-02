@@ -49,7 +49,7 @@ const router = new Router({
     },
     /*{
         path: '/',
-        redirect: '/home/all?type=__all__',
+        redirect: '/home/toutiao?type=toutiao',
     },*/
 
   ]

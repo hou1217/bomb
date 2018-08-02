@@ -64,7 +64,7 @@
         </li>
         <li class="li-star">
           <div class="div-star">
-            <img src="../assets/images/un_star.png" id="star_img" class="un-star" @click="">
+            <img src="../assets/images/un_star.png" id="star_img" class="un-star">
             <span class="star-count">{{likes}}</span>
           </div>
         </li>
@@ -82,7 +82,7 @@
             <img id="portraitUrlBottom" :src="portraitUrl" class="img-media">
           </div>
           <div class="article-meta-info div-media">
-            <div class="article-meta-name" id="article_mediaNameBottom" @click="">
+            <div class="article-meta-name" id="article_mediaNameBottom">
               {{mediaNames}}
             </div>
             <div class="media-fans" id="media-fans">
@@ -91,7 +91,7 @@
             </div>
           </div>
           <div class="article-meta-follow div-media" id="follow2">
-            <span class="media-un-follow" id="follow-action-bottom" @click="">+关注</span>
+            <span class="media-un-follow" id="follow-action-bottom">+关注</span>
           </div>
         </li>
         <li class="li-advert">
@@ -179,18 +179,30 @@
               //this.dataList = res.data.datas;
               this.time = res.data.data.createdAt;
               this.title = res.data.data.title;
-              this.mediaNames = res.data.data.media.name;
-              this.portraitUrl = res.data.data.media.portraitUrl;
-              this.mediaNames = res.data.data.media.name;
-              this.mediaId = res.data.data.media.id;
+              if(res.data.data.media){
+                this.mediaNames = res.data.data.media.name;
+                this.portraitUrl = res.data.data.media.portraitUrl;
+                this.mediaId = res.data.data.media.id;
+                this.mediaFans = res.data.data.media.fans;
+                this.mediaFollows = res.data.data.media.follows;
+              }else{
+                this.mediaNames = '';
+                this.portraitUrl = '';
+                this.mediaId = 0;
+                this.mediaFans = 0;
+                this.mediaFollows = 0;
+              }
+              
+              
+              
               this.keywords = res.data.data.keywords;
               this.content = res.data.data.items;
               this.origin = res.data.data.origin;
               this.originUrl = res.data.data.originUrl;
               this.originAuthor = res.data.data.originAuthor;
               this.linkes = res.data.data.likes;
-              this.mediaFans = res.data.data.media.fans;
-              this.mediaFollows = res.data.data.media.follows;
+              
+              
             }else{
               this.isShow = false;
             }
